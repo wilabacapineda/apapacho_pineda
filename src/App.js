@@ -6,8 +6,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <NavBar titulo="APAPACHO" descripcion="Vestuario hecho a mano para apapachar a quienes amas"/>
-        <ItemListContainer greeting={'Hola Mundo!'} />
+        <NavBar titulo={'APAPACHO'} descripcion={'Vestuario hecho a mano para apapachar a quienes amas'}/>
+        <ItemListContainer greeting={'Hola Visitante! - Bienvenida a APAPACHO'} subtitulo={'aquí encontrarás vestuario hecho a mano para apapachar a quienes amas '} />
       </header>
     </div>
   );
