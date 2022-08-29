@@ -1,0 +1,24 @@
+.cartIcon {
+    width: 1.3rem;
+    fill: white !important;
+    color: white;
+} .cartIcon#usuario {
+    width: 1rem;
+    padding-right: 1rem;
+}
+
+.cartWidget {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    gap: 5px;  
+    color: white;
+}
+
+#cartNumber {
+    font-size: 0.9rem;    
+    color: white;
+}
