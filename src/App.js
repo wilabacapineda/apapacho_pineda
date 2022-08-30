@@ -7,7 +7,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <NavBar titulo={'APAPACHO'} descripcion={'Vestuario hecho a mano para apapachar a quienes amas'}/>
-        <ItemListContainer greeting={'Hola Visitante! - Bienvenida a APAPACHO'} subtitulo={'aquí encontrarás vestuario hecho a mano para apapachar a quienes amas '} />
+        <ItemListContainer greeting={'Hola Visitante! - Bienvenida a APAPACHO'} subtitulo={'En nuestra tienda encontrarás vestuario hecho a mano para apapachar a quienes amas '} />
       </header>
     </div>
   );
