@@ -20,7 +20,7 @@ const NavBar = ({titulo, descripcion}) => {
                 </ul>
             </div>
             <div className='cart'>
-                <CartWidget />
+                <CartWidget/>
             </div>
         </div>
     );
