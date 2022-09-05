@@ -1,11 +1,12 @@
 import {useState, useEffect} from 'react'
 
-const ItemCount = ({stock, initial, onAdd}) => {
+const ItemCount = ({stock, initial, cartCount,setCartCount, onAdd}) => {
     const [itemCount, setItemCount]= useState(initial)
 
     const addCartPlus = () => {
         if(stock>0){
-            setItemCount((parseInt(itemCount)+1) > stock ? parseInt(itemCount) : parseInt(itemCount) + 1 )
+            const aux = parseInt(itemCount)+1 > stock ? parseInt(itemCount) : parseInt(itemCount) + 1
+            setItemCount(aux)            
             document.getElementById('addCart').disable = false
         } else {
             document.getElementById('addCart').disable = true
@@ -13,7 +14,8 @@ const ItemCount = ({stock, initial, onAdd}) => {
     }
     const addCartMinus = () => {
         if(stock > 0){
-            setItemCount((parseInt(itemCount)-1) > 0 ? parseInt(itemCount)-1 : parseInt(itemCount))
+            const aux = parseInt(itemCount)-1 > 0 ? parseInt(itemCount)-1 : parseInt(itemCount)
+            setItemCount(aux)
             document.getElementById('addCart').disable = false
         } else {
             document.getElementById('addCart').disable = true
@@ -21,13 +23,21 @@ const ItemCount = ({stock, initial, onAdd}) => {
     }
     
     useEffect(() => {
-        console.log(stock)
+        setCartCount(itemCount)
+    },[itemCount])
+
+    useEffect(() => {
+        if(stock<=0){
+            setItemCount(0)
+        } else {
+            setItemCount(1)
+        }
     },[stock])
 
   return (
     <>
     <div>
-        <button onClick={addCartPlus} className='botonLc' id='addCartPlus'>+</button> N° Productos {itemCount}<button onClick={addCartMinus} className='botonLc' id='addCartMinus'>-</button>
+        <button onClick={addCartPlus} className='botonLc' id='addCartPlus'>+</button> N° Productos {cartCount}<button onClick={addCartMinus} className='botonLc' id='addCartMinus'>-</button>
     </div>    
     <div>
         <button onClick={onAdd} className='botonLc' id='addCart' value={itemCount}>Agregar al Carrito</button>

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 
-const CartNumber = ({number}) => {
-    const [cartNumber, setCartNumber] = useState(0)  
+const CartNumber = ({totalCartCount, setTotalCartCount}) => {
+    const [cartNumber, setCartNumber] = useState(totalCartCount)  
     useEffect(() => {
-        setCartNumber(number)
-    },[number])
+        setCartNumber(totalCartCount)
+    },[totalCartCount])
     return <span>{cartNumber>0 ? cartNumber: ""}</span>
     
 }

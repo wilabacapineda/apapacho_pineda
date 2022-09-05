@@ -3,7 +3,7 @@ import logo from './../../logo_b_t.png';
 import Menu from './../Menu/Menu';
 import CartWidget from '../CartWidget/CartWidget';
 
-const NavBar = ({titulo, descripcion}) => {
+const NavBar = ({titulo, descripcion, totalCartCount, setTotalCartCount}) => {
     return (
         <div className='navbar'>
             <div className='logo'>
@@ -20,7 +20,7 @@ const NavBar = ({titulo, descripcion}) => {
                 </ul>
             </div>
             <div className='cart'>
-                <CartWidget/>
+                <CartWidget totalCartCount={totalCartCount} setTotalCartCount={setTotalCartCount} />
             </div>
         </div>
     );
