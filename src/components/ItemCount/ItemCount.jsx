@@ -37,7 +37,7 @@ const ItemCount = ({stock, initial, cartCount,setCartCount, onAdd}) => {
   return (
     <>
     <div>
-        <button onClick={addCartPlus} className='botonLc' id='addCartPlus'>+</button> N° Productos {cartCount}<button onClick={addCartMinus} className='botonLc' id='addCartMinus'>-</button>
+        <button onClick={addCartPlus} className='botonLc' id='addCartPlus'>+</button> N° Productos {cartCount} <button onClick={addCartMinus} className='botonLc' id='addCartMinus'>-</button>
     </div>    
     <div>
         <button onClick={onAdd} className='botonLc' id='addCart' value={itemCount}>Agregar al Carrito</button>
