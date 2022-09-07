@@ -1,54 +1,21 @@
-import { useEffect } from 'react'
-import {useState} from 'react'
-import ItemCount from '../ItemCount/ItemCount'
 import './styles.css'
 
-const Item = ({id,title,description,price, pictureUrl,s, totalCartCount, setTotalCartCount}) => {
-
-    const [cartCount, setCartCount]= useState(1)
-    const [stock, setStock] = useState(parseInt(s))
-
-    const addCart = (e) => {
-    
-      setStock(stock-cartCount)
-      setTotalCartCount(parseInt(totalCartCount)+parseInt(cartCount))     
-      
-      if(stock>1){
-        e.target.disabled = false
-      } else {
-        e.target.disabled = true
-      }
-    
-    }
-
-    useEffect( () => {
-        if(stock<=0){
-            setCartCount(0)
-        } else {
-            setCartCount(1)
-        }
-    },[stock])
-
-    
+const Item = ({id,title,price, pictureUrl,s}) => {
+   
   return (
-    <div className="producto">
+    <div className="producto" id={id}>
         <div className='productoItem'>
           <div className='productoImage'>
-            <img src={require('./'+pictureUrl)} alt={description} />
+            <img src={require('./'+pictureUrl)} alt={title} />
           </div>        
           <div className='productoInfo'>
             <h2>{title}</h2>
-            <div className="productoInfoDesc">{description}</div>
             <div className="productoInfoPrice">
-              <span>${price}</span>
-              <div className='productoShop'>
-                <ItemCount key={id} stock={stock} initial={1} cartCount={cartCount} setCartCount={setCartCount} onAdd={addCart} />
-                <div className="itemCarrito"> Stock {stock} | Total Productos en Carrito: {totalCartCount} </div>
-              </div>
+              <span>${price}</span>              
             </div>
+            <span>Stock: {s}</span>
           </div>
-        </div>
-                        
+        </div>                        
     </div>
   )
 }
