@@ -1,8 +1,6 @@
 import Item from '../Item/Item'
 import loading from './Loading_icon.gif'
 
-
-
 const ItemList = ({items}) => {   
 
     const load_img = () => {
@@ -22,8 +20,7 @@ const ItemList = ({items}) => {
             <>
                 {resultado}
             </>
-        )  
-  
+        )    
 }
 
 export default ItemList

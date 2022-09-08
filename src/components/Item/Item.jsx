@@ -1,6 +1,6 @@
 import './styles.css'
 
-const Item = ({id,title,price, pictureUrl,s}) => {
+const Item = ({id,title,price,pictureUrl,s}) => {
    
   return (
     <div className="producto" id={id}>
