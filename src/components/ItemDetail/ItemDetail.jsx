@@ -6,12 +6,17 @@ import './styles.css'
 
 const ItemDetail = ({item, totalCartCount, setTotalCartCount}) => {
     const [cartCount, setCartCount]= useState(1)
-    const [stock, setStock] = useState(item.stock)
-
+    const [stock, setStock] = useState()
+    const [tallaSelected, setTallaSelected] = useState("")
+    const [colorSelected, setColorSelected] = useState("")
+    const [botonDisabled,setBotonDisabled] = useState(true)
+    const [precio, setPrecio] = useState(0)
+    
+    /*
     useEffect( () => {
         setStock(item.stock)        
     },[item])
-
+    */
     useEffect( () => {
         if(stock<=0){
             setCartCount(0)
@@ -20,56 +25,157 @@ const ItemDetail = ({item, totalCartCount, setTotalCartCount}) => {
         }
     },[stock])
 
-    const addCart = (e) => {
+    useEffect( () => {        
+        mostrarStock()
+    },[tallaSelected])
+
+    useEffect( () => {
+        mostrarStock()
+    },[colorSelected])
+
+    const addCart = () => {
     
         setStock(stock-cartCount)
         setTotalCartCount(parseInt(totalCartCount)+parseInt(cartCount))     
 
-        if(stock>1){
-            e.target.disabled = false
-        } else {
-            e.target.disabled = true
+        if(tallaSelected!=="" && colorSelected !==""){
+            const auxitem = item.map((p) => {            
+                for(const j in p.productos){
+                    if(p.productos[j].color === colorSelected && p.productos[j].talla === tallaSelected ) {                        
+                        p.productos[j].stock = p.productos[j].stock-cartCount
+                    }                    
+                }
+                return(p)
+            })            
         }
-    
+
+        if(stock>1){
+            setBotonDisabled(false)
+        } else {
+            setBotonDisabled(true)
+        }
     }
 
     const load_img = () => {
         return ( <img src={loading} alt="loading" /> )
     }
-    
+
+    const changeColor = (e) => {
+        setColorSelected(e.target.value)
+    }
+
+    const changeTalla = (e) => {
+        setTallaSelected(e.target.value)
+    }
+
+    const mostrarStock = () => {
+        if(tallaSelected!=="" && colorSelected !==""){
+            item.map((p) => {            
+                for(const j in p.productos){
+                    if(p.productos[j].color === colorSelected && p.productos[j].talla === tallaSelected ) {
+                        setStock(p.productos[j].stock) 
+                        setPrecio(p.productos[j].price)
+                        if(p.productos[j].stock>1){
+                            setBotonDisabled(false)
+                        } else {
+                            setBotonDisabled(true)
+                        }                       
+                    }                    
+                }  
+            })
+        }
+
+        
+    }
+
+    const load_cart = () => {
+        return (
+            <div className='productoShop'>
+                <ItemCount disabled={botonDisabled} key={item.id} stock={stock} initial={1} cartCount={cartCount} setCartCount={setCartCount} onAdd={addCart} />
+                <div className="itemCarrito"> Stock {stock} | Total Productos en Carrito: {totalCartCount} </div>
+            </div>
+        )
+    }
+
     const load_prod = () => {
+
+        let color = []
+        let talla = []
+        item.map((p) => {            
+            for(const j in p.productos){
+                if(color.length===0){
+                    color.push(p.productos[j].color)
+                } else {
+                    let entro_c=0
+                    for (const c of color){
+                        if(c===p.productos[j].color){
+                            entro_c=1
+                        }
+                    }
+                    if(entro_c===0){
+                        color.push(p.productos[j].color)
+                    }
+                }  
+
+                if(talla.length===0){
+                    talla.push(p.productos[j].talla)
+                } else {
+                    let entro_t=0
+                    for (const c of talla){
+                        if(c===p.productos[j].talla){
+                            entro_t=1
+                        }
+                    }
+                    if(entro_t===0){
+                        talla.push(p.productos[j].talla)
+                    }
+                }  
+            }  
+        })
+        const optionColor = color.map((c) => (<option key={c} value={c}>{c}</option>))
+        const optionTalla = talla.map((c) => (<option key={c} value={c}>{c}</option>))
+        
         return (            
-            <div className="producto" id={item.id}>
-                <h1>Vista de Producto</h1>
+            <div className="producto" id={item[0].id}>
+                <h1>{item[0].title}</h1>
                 <div className='productoItem'>
                     <div className='productoImage'>
-                        <img src={require('./'+item.pictureUrl)} alt={item.title} />
+                        <img src={require('./'+item[0].pictureUrl)} alt={item[0].title} />
                     </div>                            
                     <div className='productoInfo'>
-                        <h2>{item.title}</h2>
-                        <div className="productoInfoDesc">{item.description}</div>
-                        <div className="productoInfoPrice">
-                            <span>${item.price}</span>              
+                        <div className="productoInfoDesc">{item[0].description}</div>
+                        <div className='productoInfoColor'>
+                            <span>Color:</span>
+                            <select key={'selectColor'} onChange={changeColor} defaultValue={colorSelected} name="color" id="color">
+                                <option value="" disabled>Seleccione un Color</option>
+                                {optionColor}
+                            </select>
                         </div>
+                        <div className='productoInfoTalla'>
+                            <span>Talla:</span>
+                            <select key={'selectTalla'} onChange={changeTalla} defaultValue={tallaSelected} name="talla" id="talla">
+                                <option value="" disabled>Seleccione un Talla</option>
+                                {optionTalla}
+                            </select>
+                        </div>
+                        <div className='productoInfoPrice'>
+                            {precio>0 ? 'Precio: $'+precio.toLocaleString() : ""}
+                        </div>                                             
+                        {stock>=0 ? load_cart() : ""}                        
                     </div>                    
                 </div>    
-                <div className='productoShop'>
-                    <ItemCount key={item.id} stock={stock} initial={1} cartCount={cartCount} setCartCount={setCartCount} onAdd={addCart} />
-                    <div className="itemCarrito"> Stock {stock} | Total Productos en Carrito: {totalCartCount} </div>
-                </div>                    
+                   
             </div>            
         )
     }
 
     const resultado = Object.keys(item).length===0 ? load_img() : load_prod() 
 
-        return (
-            <>
-                {resultado}
-            </>
-        )  
-
-  
+    return (
+        <>
+            {resultado}
+        </>
+    )    
 }
 
 export default ItemDetail

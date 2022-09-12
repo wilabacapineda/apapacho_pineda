@@ -12,11 +12,13 @@ const NavBar = ({titulo, descripcion, totalCartCount, setTotalCartCount}) => {
             <div className='menu'>
                 <ul className="navbar-nav">
                     <Menu menuName={'Inicio'} url={'/'} />                    
-                    <Menu menuName={'Tienda'} url={'/'} />                    
+                    <Menu menuName={'Tienda'} url={'/tienda'} />   
+                    { /*}                 
                     <Menu menuName={'Tallas'} url={'/'} />                    
                     <Menu menuName={'¿Quienes Somos?'} url={'/'} />                    
                     <Menu menuName={'Encuéntranos'} url={'/'} />                    
                     <Menu menuName={'Contacto'} url={'/'} />                                                  
+                    */ }
                 </ul>
             </div>
             <div className='cart'>

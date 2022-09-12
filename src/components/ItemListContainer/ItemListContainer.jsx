@@ -3,7 +3,7 @@ import Productos from './../Productos/productos'
 import {useState, useEffect} from 'react'
 import './styles.css'
 
-const ItemListContainer = ({greeting, subtitulo, totalCartCount, setTotalCartCount}) => {  
+const ItemListContainer = ({totalCartCount, setTotalCartCount}) => {  
   const[items, setItems] = useState([])
 
   useEffect(() => {
@@ -14,19 +14,21 @@ const ItemListContainer = ({greeting, subtitulo, totalCartCount, setTotalCartCou
     })
 
     getItems.then((result) => {
-      const rangoPrecios = (title) => {
+      const rangoPrecios = (id) => {
         let min = 0
         let max = 0    
         let stock = 0
-        result.forEach( (item) => { 
-            if(item.title===title) {                
-                if((item.price>min && min===0) || (min!==0 && item.price<min)){
-                    min = item.price
+        result.forEach( (item) => {             
+            if(item.id===id) {                
+              for(let i in item.productos){
+                if((item.productos[i].price>min && min===0) || (min!==0 && item.productos[i].price<min)){
+                  min = item.productos[i].price
                 }
-                if(item.price>max){
-                    max = item.price
+                if(item.productos[i].price>max){
+                  max = item.productos[i].price
                 }   
-                stock = stock + item.stock
+                stock = stock + item.productos[i].stock
+              }
             }     
         })  
         return [min,max,stock]
@@ -34,34 +36,25 @@ const ItemListContainer = ({greeting, subtitulo, totalCartCount, setTotalCartCou
 
       const itemsByTitle = []
       result.forEach( (item) => {
-        if(item.stock > 0) {
-          let itemExists = 0
-          itemsByTitle.forEach( itembt => {
-            if(itembt.title===item.title){
-              itemExists = 1
-            }
-          })
-
-          if(itemExists===0){                      
-            const [min, max, stock] = rangoPrecios(item.title)
-            itemsByTitle.push({
-              title: item.title,            
-              price: min+' - '+max,
-              stock: stock,
-              pictureUrl: item.pictureUrl
-            })
-          }
-        }
-        
+        const [min, max, stock] = rangoPrecios(item.id)
+       
+        if(stock > 0) {
+          let itemExists = 0   
+          itemsByTitle.push({
+            title: item.title,    
+            id: item.id,         
+            price: min+' - '+max,
+            stock: stock,
+            pictureUrl: item.pictureUrl
+          })      
+        }     
       })
       setItems(itemsByTitle)      
     })
   }, [])
 
   return (
-    <>
-      <h1 className="greeting">{greeting}</h1>
-      <h4 className='subtitulo'>{subtitulo}</h4>
+    <>      
       <div className="nProductos">
         <ItemList items={items} />        
       </div>            

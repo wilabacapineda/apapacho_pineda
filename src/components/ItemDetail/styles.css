@@ -11,7 +11,11 @@
     align-content: center;
     align-items: center;
     flex-wrap: wrap;
-} .productPage .producto .productoItem img {
+} .productPage .producto .productoItem .productoInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}  .productPage .producto .productoItem img {
     max-width: 300px;
 } .productPage .producto .productoItem h2{
     margin: 0;
@@ -21,7 +25,7 @@
 } .productPage .producto .productoItem .productoInfoPrice {
     margin: 0;
     font-size: 2rem;
-} .productPage .producto .productoItem .productoInfoPrice .productoShop {
+} .productPage .producto .productoItem .productoShop {
     margin: 0;
     font-size: 1rem;
     display: flex;
@@ -29,4 +33,14 @@
     gap: 5px;
     align-content: center;
     align-items: center;
+} .productPage .producto .productoItem .productoInfoColor, 
+.productPage .producto .productoItem .productoInfoTalla {
+    display: flex;
+    flex-direction: column;    
+} .productPage .producto .productoItem .productoInfoColor span,
+.productPage .producto .productoItem .productoInfoTalla span {
+    font-size: 1rem;
+} .productPage .producto .productoItem .productoInfoColor select, 
+.productPage .producto .productoItem .productoInfoTalla select{
+    padding: 1rem;
 }

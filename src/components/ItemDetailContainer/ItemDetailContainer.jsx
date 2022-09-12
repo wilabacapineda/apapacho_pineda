@@ -1,10 +1,11 @@
 import ItemDetail from "./../ItemDetail/ItemDetail"
 import Productos from './../Productos/productos'
 import {useState, useEffect} from 'react'
+import { useParams } from "react-router-dom"
 
 const ItemDetailContainer = ({totalCartCount, setTotalCartCount}) => {
     const[item, setItem] = useState([])
-
+    const {id} = useParams()
     useEffect(() => {
         const getItem = new Promise((resolve,reject) => {
           setTimeout(() => {      
@@ -13,22 +14,8 @@ const ItemDetailContainer = ({totalCartCount, setTotalCartCount}) => {
         })
     
         getItem.then((result) => {
-          //const title = 'Poleron Amaranta'          
-          const id = 11
-          const itemAux = []
-          result.forEach( (i) => {
-            if(i.stock > 0) {
-                /*
-                    if(title===item.title){                      
-                        itemsByTitle.push(item)
-                    }
-                */
-                if(id===i.id){                      
-                    itemAux.push(i)
-                }
-            }            
-          })
-          setItem(itemAux[0])      
+          const itemAux = result.filter( (i) => parseInt(i.id) === parseInt(id))      
+          setItem(itemAux)      
         })
       }, [])
 
