@@ -17,7 +17,7 @@ const ItemDetailContainer = ({totalCartCount, setTotalCartCount}) => {
           const itemAux = result.filter( (i) => parseInt(i.id) === parseInt(id))      
           setItem(itemAux)      
         })
-      }, [])
+    }, [])
 
   return (
     <div className="productPage"><ItemDetail item={item} totalCartCount={totalCartCount} setTotalCartCount={setTotalCartCount} /></div>

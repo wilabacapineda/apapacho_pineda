@@ -1,25 +1,27 @@
 import ItemList from './../ItemList/ItemList'
 import Productos from './../Productos/productos'
 import {useState, useEffect} from 'react'
+import { useParams } from "react-router-dom"
 import './styles.css'
 
-const ItemListContainer = ({totalCartCount, setTotalCartCount}) => {  
+const ItemListContainer = () => {  
   const[items, setItems] = useState([])
-
+  const {id} = useParams()
   useEffect(() => {
+    setItems([])
     const getItems = new Promise((resolve,reject) => {
-      setTimeout(() => {      
+      setTimeout(() => {   
         resolve(Productos)
       }, 2000)
     })
 
     getItems.then((result) => {
-      const rangoPrecios = (id) => {
+      const rangoPrecios = (idx) => {
         let min = 0
         let max = 0    
         let stock = 0
         result.forEach( (item) => {             
-            if(item.id===id) {                
+            if(item.id===idx) {                
               for(let i in item.productos){
                 if((item.productos[i].price>min && min===0) || (min!==0 && item.productos[i].price<min)){
                   min = item.productos[i].price
@@ -34,24 +36,41 @@ const ItemListContainer = ({totalCartCount, setTotalCartCount}) => {
         return [min,max,stock]
       }
 
-      const itemsByTitle = []
-      result.forEach( (item) => {
-        const [min, max, stock] = rangoPrecios(item.id)
-       
-        if(stock > 0) {
-          let itemExists = 0   
-          itemsByTitle.push({
-            title: item.title,    
-            id: item.id,         
-            price: min+' - '+max,
-            stock: stock,
-            pictureUrl: item.pictureUrl
-          })      
-        }     
-      })
-      setItems(itemsByTitle)      
+      const itemsByX = []
+
+      if(id===undefined){
+        result.forEach( (item) => {
+          const [min, max, stock] = rangoPrecios(item.id)         
+          if(stock > 0) {
+            itemsByX.push({
+              title: item.title,    
+              id: item.id,         
+              price: min+' - '+max,
+              stock: stock,
+              pictureUrl: item.pictureUrl
+            })      
+          }     
+        })    
+      } else {
+        result.filter( (item) => {
+          if(item.categoria===id){
+            const [min, max, stock] = rangoPrecios(item.id)
+            if(stock > 0) {
+              itemsByX.push({
+                title: item.title,    
+                id: item.id,         
+                price: min+' - '+max,
+                stock: stock,
+                pictureUrl: item.pictureUrl
+              })      
+            } 
+          }
+        } )          
+
+      }          
+      setItems(itemsByX)      
     })
-  }, [])
+  }, [id])
 
   return (
     <>      

@@ -12,18 +12,11 @@ function App() {
     return (
       <>
         <Bienvenida greeting={'Hola Visitante! - Bienvenida a APAPACHO'} subtitulo={'En nuestra tienda encontrarás vestuario hecho a mano para apapachar a quienes amas '} />
-        <ItemListContainer totalCartCount={totalCartCount} setTotalCartCount={setTotalCartCount} />
+        <ItemListContainer />
       </>
     )
   }
-  const tienda = () => {
-    return (
-      <>
-        <ItemListContainer totalCartCount={totalCartCount} setTotalCartCount={setTotalCartCount} />
-      </>
-    )
-  }
-
+  
   return (
     <BrowserRouter>
       <div className="App">
@@ -31,7 +24,8 @@ function App() {
           <NavBar titulo={'APAPACHO'} totalCartCount={totalCartCount} setTotalCartCount={setTotalCartCount} descripcion={'Vestuario hecho a mano para apapachar a quienes amas'}/>
           <Routes>
             <Route path='/' element={inicio()} />                    
-            <Route path='/tienda' element={tienda()} /> 
+            <Route path='/tienda' element={<ItemListContainer />} /> 
+            <Route path='/tienda/categoria/:id' element={<ItemListContainer />} /> 
             <Route path='/tienda/item/:id' element={<ItemDetailContainer totalCartCount={totalCartCount} setTotalCartCount={setTotalCartCount} />} />                    
           </Routes>
         </header>

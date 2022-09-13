@@ -12,7 +12,8 @@ const NavBar = ({titulo, descripcion, totalCartCount, setTotalCartCount}) => {
             <div className='menu'>
                 <ul className="navbar-nav">
                     <Menu menuName={'Inicio'} url={'/'} />                    
-                    <Menu menuName={'Tienda'} url={'/tienda'} />   
+                    <Menu menuName={'Tienda'} url={'/tienda'} />
+                    <Menu menuName={'Poleron con Capucha'} url={'/tienda/categoria/poleron-capucha'} />   
                     { /*}                 
                     <Menu menuName={'Tallas'} url={'/'} />                    
                     <Menu menuName={'¿Quienes Somos?'} url={'/'} />                    

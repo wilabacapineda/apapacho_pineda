@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import {useState} from 'react'
 import ItemCount from '../ItemCount/ItemCount'
 import loading from './Loading_icon.gif'
+import {NavLink} from 'react-router-dom'
 import './styles.css'
 
 const ItemDetail = ({item, totalCartCount, setTotalCartCount}) => {
@@ -12,11 +13,6 @@ const ItemDetail = ({item, totalCartCount, setTotalCartCount}) => {
     const [botonDisabled,setBotonDisabled] = useState(true)
     const [precio, setPrecio] = useState(0)
     
-    /*
-    useEffect( () => {
-        setStock(item.stock)        
-    },[item])
-    */
     useEffect( () => {
         if(stock<=0){
             setCartCount(0)
