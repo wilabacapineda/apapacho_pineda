@@ -40,30 +40,26 @@ const ItemListContainer = () => {
 
       if(id===undefined){
         result.forEach( (item) => {
-          const [min, max, stock] = rangoPrecios(item.id)         
-          if(stock > 0) {
+          const [min, max, stock] = rangoPrecios(item.id)                   
+          itemsByX.push({
+            title: item.title,    
+            id: item.id,         
+            price: min+' - '+max,
+            stock: stock,
+            pictureUrl: item.pictureUrl
+          })                     
+        })    
+      } else {
+        result.filter( (item) => {
+          if(item.categoria===id){
+            const [min, max, stock] = rangoPrecios(item.id)
             itemsByX.push({
               title: item.title,    
               id: item.id,         
               price: min+' - '+max,
               stock: stock,
               pictureUrl: item.pictureUrl
-            })      
-          }     
-        })    
-      } else {
-        result.filter( (item) => {
-          if(item.categoria===id){
-            const [min, max, stock] = rangoPrecios(item.id)
-            if(stock > 0) {
-              itemsByX.push({
-                title: item.title,    
-                id: item.id,         
-                price: min+' - '+max,
-                stock: stock,
-                pictureUrl: item.pictureUrl
-              })      
-            } 
+            })                
           }
         } )          
 
