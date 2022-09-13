@@ -5,7 +5,7 @@ import loading from './Loading_icon.gif'
 import {NavLink} from 'react-router-dom'
 import './styles.css'
 
-const ItemDetail = ({item, totalCartCount, setTotalCartCount}) => {
+const ItemDetail = ({item, totalCartCount, setTotalCartCount,carrito,setCarrito}) => {
     const [cartCount, setCartCount]= useState(1)
     const [stock, setStock] = useState()
     const [tallaSelected, setTallaSelected] = useState("")
@@ -35,14 +35,21 @@ const ItemDetail = ({item, totalCartCount, setTotalCartCount}) => {
         setTotalCartCount(parseInt(totalCartCount)+parseInt(cartCount))     
 
         if(tallaSelected!=="" && colorSelected !==""){
-            const auxitem = item.map((p) => {            
+            const auxitem = carrito
+            item.map((p) => {  
                 for(const j in p.productos){
                     if(p.productos[j].color === colorSelected && p.productos[j].talla === tallaSelected ) {                        
                         p.productos[j].stock = p.productos[j].stock-cartCount
+                        let aux = {
+                            id:p.id,
+                            cartCount:cartCount,                            
+                        }
+                        auxitem.push(aux)
+                        setCarrito(auxitem)
                     }                    
                 }
-                return(p)
-            })            
+                
+            })  
         }
 
         if(stock>1){

@@ -3,7 +3,7 @@ import Productos from './../Productos/productos'
 import {useState, useEffect} from 'react'
 import { useParams } from "react-router-dom"
 
-const ItemDetailContainer = ({totalCartCount, setTotalCartCount}) => {
+const ItemDetailContainer = ({totalCartCount, setTotalCartCount, carrito, setCarrito}) => {
     const[item, setItem] = useState([])
     const {id} = useParams()
     useEffect(() => {
@@ -20,7 +20,7 @@ const ItemDetailContainer = ({totalCartCount, setTotalCartCount}) => {
     }, [])
 
   return (
-    <div className="productPage"><ItemDetail item={item} totalCartCount={totalCartCount} setTotalCartCount={setTotalCartCount} /></div>
+    <div className="productPage"><ItemDetail item={item} totalCartCount={totalCartCount} setTotalCartCount={setTotalCartCount}  carrito={carrito} setCarrito={setCarrito} /></div>
   )
 }
 
