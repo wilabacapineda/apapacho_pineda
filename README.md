@@ -1,3 +1,12 @@
+
+- Se utiliza componente Link para crear menu de NavBar, para página principal, tienda y categoria. (Carrito de compras en progreso)
+- En ItemListContainer se utiliza para pagina principal, página de tienda y página de categoria.
+- La página de categoria filtra por elemento categoria del objeto de productos a través de URL Params de texto.
+- La página de cada producto utiliza ItemDetailContainer para mostrarse a través de URL Params. La página posee un selector de Color y Talla del producto para verificar Stock y mostrar Información del Producto como precio, cantidad y boton para agregar al Carrito.
+- Al Agregar al Carrito se muestra cantidad de productos en el Menu junto al icono del carro, se descuenta del stock y se agrega a carro.
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
