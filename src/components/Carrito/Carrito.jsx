@@ -1,14 +1,51 @@
 import { useState, useEffect } from 'react'
-import Productos from './../Productos/productos'
+import loading from './Loading_icon.gif'
 import './styles.css'
 
-const Carrito = ({carrito,setCarrito,totalCartCount}) => {
-    const [carro, setCarro] = useState([carrito])  
-    useEffect(() => {
-        setCarro(carrito)
-    },[carrito])
+const Carrito = ({carrito,totalCartCount}) => {
 
-    return <span>{totalCartCount>0 ? (<><div className='carrito'><h1>Carrito de Compras con {totalCartCount} Productos</h1></div></>): (<><div className='carrito'><h1>Carrito de Compras Vacío</h1></div></>)}</span>
+    const [carro, setCarro]= useState(<img src={loading} alt="loading" />) 
+      
+    useEffect( () => {
+        const getItems = new Promise((resolve,reject) => {
+            setTimeout(() => {   
+                resolve(carrito)
+            }, 2000)
+        })
+        getItems.then((result) => {
+            const resultado = carrito.map((c) => (
+                    <div key={'product_'+c.id+'_'+c.color+'_'+c.talla} id={'product_'+c.id} className='productCart'>
+                        <div className='productCartImg'><img src={require('./'+c.pictureUrl)} alt={c.title} /></div>
+                        <div className='productCartInfo'>
+                            <h2 className='productCartName'>{c.title}</h2>  
+                            <div className='productCartDetail'>Talla: {c.talla} | Color: {c.color} | Cantidad: {c.cartCount} </div>  
+                        </div>                        
+                    </div>
+                )
+            )            
+            setCarro(
+                <>
+                    <div className='carrito'>
+                        <h1>Carrito de Compras</h1>
+                        <div className='carritoPage'>
+                            <div className='carritoLeft'>
+                                {resultado}
+                            </div>
+                            <div className='carritoRight'>
+                                <h3>Total de Productos {totalCartCount}</h3>
+                            </div>
+                        </div>                                                
+                    </div>
+                </>
+            )    
+        })
+    },[])
+
+    return (
+        <>
+            {carro}
+        </>
+    ) 
 }
 
 export default Carrito

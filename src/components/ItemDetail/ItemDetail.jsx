@@ -29,29 +29,47 @@ const ItemDetail = ({item, totalCartCount, setTotalCartCount,carrito,setCarrito}
         mostrarStock()
     },[colorSelected])
 
-    const addCart = () => {
-    
-        setStock(stock-cartCount)
-        setTotalCartCount(parseInt(totalCartCount)+parseInt(cartCount))     
+    const addCart = (itemCount) => {
+        setCartCount(itemCount)
+        setStock(stock-itemCount)
+        setTotalCartCount(parseInt(totalCartCount)+parseInt(itemCount))     
 
         if(tallaSelected!=="" && colorSelected !==""){
             const auxitem = carrito
             item.map((p) => {  
                 for(const j in p.productos){
                     if(p.productos[j].color === colorSelected && p.productos[j].talla === tallaSelected ) {                        
-                        p.productos[j].stock = p.productos[j].stock-cartCount
-                        let aux = {
-                            id:p.id,
-                            cartCount:cartCount,                            
+                        p.productos[j].stock = p.productos[j].stock-itemCount
+
+                        let entro_c = 0
+                        for(let c in auxitem){
+                            if(auxitem[c].id === p.id && p.productos[j].color === auxitem[c].color && p.productos[j].talla === auxitem[c].talla){
+                                entro_c = 1
+                                auxitem[c].stock = p.productos[j].stock
+                                auxitem[c].cartCount += itemCount
+                            } 
                         }
-                        auxitem.push(aux)
+                        if(entro_c === 0) {                            
+                            auxitem.push({
+                                id:p.id,
+                                categoria:p.categoria,
+                                title:p.title,                                
+                                description:p.description,
+                                pictureUrl:p.pictureUrl,
+                                cartCount:itemCount,                            
+                                color:p.productos[j].color,
+                                talla:p.productos[j].talla,
+                                stock:p.productos[j].stock,  
+                                price:p.productos[j].price,  
+                                ventas:p.productos[j].ventas
+                            })
+                        }                        
                         setCarrito(auxitem)
                     }                    
-                }
-                
-            })  
+                }                
+            })   
         }
-
+        
         if(stock>1){
             setBotonDisabled(false)
         } else {

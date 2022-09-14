@@ -28,7 +28,7 @@ function App() {
           <Routes>
             <Route path='/' element={inicio()} />                    
             <Route path='/tienda' element={<ItemListContainer />} /> 
-            <Route path='/carrito' element={<Carrito carrito={carrito} setCarrito={setCarrito} totalCartCount={totalCartCount}/>} /> 
+            <Route path='/carrito' element={<Carrito carrito={carrito}  totalCartCount={totalCartCount}/>} /> 
             <Route path='/tienda/categoria/:id' element={<ItemListContainer />} /> 
             <Route path='/tienda/item/:id' element={<ItemDetailContainer totalCartCount={totalCartCount} setTotalCartCount={setTotalCartCount} carrito={carrito} setCarrito={setCarrito} />} />                    
           </Routes>
