@@ -21,4 +21,23 @@
     text-align: left;
 } .carrito .carritoPage .productCartInfo .productCartDetail {
     font-size: 1rem;
-}
+    text-align: left;
+} .carrito .carritoPage .productCartInfo .productCartDetailTitle {
+    display: flex;
+    flex-direction: row;
+    align-content: stretch;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 1rem;
+    font-size: 1rem;
+    text-align: left;
+} .carrito .carritoPage .productCartInfo .productCartDetailTValue {        
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    align-content: center;    
+    font-size: 1rem;
+    text-align: left;
+} 

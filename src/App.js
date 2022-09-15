@@ -3,7 +3,7 @@ import {useState} from 'react'
 import NavBar from './components/NavBar/NavBar';
 import ItemListContainer from './components/ItemListContainer/ItemListContainer';
 import Bienvenida from './components/Bienvenida/Bienvenida';
-import {BrowserRouter, Routes,Router, Route} from 'react-router-dom'
+import {BrowserRouter, Routes,Route} from 'react-router-dom'
 import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailContainer';
 import Carrito from './components/Carrito/Carrito';
 

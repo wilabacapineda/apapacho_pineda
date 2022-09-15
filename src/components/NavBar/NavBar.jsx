@@ -2,12 +2,13 @@ import './styles.css';
 import logo from './../../logo_b_t.png';
 import Menu from './../Menu/Menu';
 import CartWidget from '../CartWidget/CartWidget';
+import {NavLink} from 'react-router-dom'
 
 const NavBar = ({titulo, descripcion, totalCartCount, setTotalCartCount}) => {
     return (
         <div className='navbar'>
             <div className='logo'>
-                <a href="#" title={descripcion} className="titulo"><span>{titulo}</span><img src={logo} alt="log" /></a>
+                <NavLink to={'/'} title={descripcion} className="titulo"><span>{titulo}</span><img src={logo} alt="log" /></NavLink>            
             </div>
             <div className='menu'>
                 <ul className="navbar-nav">

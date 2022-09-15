@@ -13,11 +13,6 @@ const ItemCount = ({stock, initial, onAdd}) => {
             setItemCount(parseInt(itemCount)-1 > 0 ? parseInt(itemCount)-1 : parseInt(itemCount))
         } 
     }
-    /*
-    useEffect(() => {
-        setCartCount(itemCount)
-    },[itemCount])
-    */
 
     useEffect(() => {
         if(stock<=0){

@@ -12,14 +12,19 @@ const Carrito = ({carrito,totalCartCount}) => {
                 resolve(carrito)
             }, 2000)
         })
-        getItems.then((result) => {
-            const resultado = carrito.map((c) => (
+        getItems.then((result) => {            
+            const resultado = result.map((c) => (
                     <div key={'product_'+c.id+'_'+c.color+'_'+c.talla} id={'product_'+c.id} className='productCart'>
                         <div className='productCartImg'><img src={require('./'+c.pictureUrl)} alt={c.title} /></div>
                         <div className='productCartInfo'>
-                            <h2 className='productCartName'>{c.title}</h2>  
-                            <div className='productCartDetail'>Talla: {c.talla} | Color: {c.color} | Cantidad: {c.cartCount} </div>  
-                        </div>                        
+                            <h2 className='productCartName'>{c.title} {c.talla}</h2>  
+                            <div className='productCartDetail'>Talla: {c.talla} | Color: {c.color}</div>  
+                            <div className='productCartDetailTitle'>
+                                <div className='productCartDetailTValue'><span>Valor</span><span>${c.price.toLocaleString()}</span></div>
+                                <div className='productCartDetailTValue'><span>Cant.</span><span>{c.cartCount}</span></div>
+                                <div className='productCartDetailTValue'><span>TOTAL</span><span>${(c.cartCount * c.price).toLocaleString()}</span></div>                                
+                            </div>
+                        </div>                       
                     </div>
                 )
             )            

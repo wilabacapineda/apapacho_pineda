@@ -39,30 +39,29 @@ const ItemListContainer = () => {
       const itemsByX = []
 
       if(id===undefined){
-        result.forEach( (item) => {
-          const [min, max, stock] = rangoPrecios(item.id)                   
+        for(let j in result){
+          const [min, max, stock] = rangoPrecios(result[j].id)
           itemsByX.push({
-            title: item.title,    
-            id: item.id,         
+            title: result[j].title,    
+            id: result[j].id,         
             price: min+' - '+max,
             stock: stock,
-            pictureUrl: item.pictureUrl
-          })                     
-        })    
+            pictureUrl: result[j].pictureUrl
+          }) 
+        }   
       } else {
-        result.filter( (item) => {
-          if(item.categoria===id){
-            const [min, max, stock] = rangoPrecios(item.id)
+        for(let j in result){
+          if(result[j].categoria===id){
+            const [min, max, stock] = rangoPrecios(result[j].id)
             itemsByX.push({
-              title: item.title,    
-              id: item.id,         
+              title: result[j].title,    
+              id: result[j].id,         
               price: min+' - '+max,
               stock: stock,
-              pictureUrl: item.pictureUrl
+              pictureUrl: result[j].pictureUrl
             })                
           }
-        } )          
-
+        }
       }          
       setItems(itemsByX)      
     })

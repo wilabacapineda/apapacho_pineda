@@ -9,9 +9,9 @@ const CartWidget = ({totalCartCount, setTotalCartCount}) => {
   return (    
     
       <div className="cartWidget">  
-          <img className="cartIcon" id="usuario" src={UserIcon} />
+          <img className="cartIcon" id="usuario" src={UserIcon} alt="Icono de Usuario"/>
           <Link to='/carrito' className='cartWidget'>
-            <img className="cartIcon" src={CartIcon} />
+            <img className="cartIcon" src={CartIcon} alt="Icono de Carro" />
             <span id="cartNumber"><CartNumber totalCartCount={totalCartCount} setTotalCartCount={setTotalCartCount} /></span>
           </Link>         
       </div>

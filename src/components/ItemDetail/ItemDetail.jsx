@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import {useState} from 'react'
 import ItemCount from '../ItemCount/ItemCount'
 import loading from './Loading_icon.gif'
-import {NavLink} from 'react-router-dom'
 import './styles.css'
 
 const ItemDetail = ({item, totalCartCount, setTotalCartCount,carrito,setCarrito}) => {
@@ -36,38 +35,39 @@ const ItemDetail = ({item, totalCartCount, setTotalCartCount,carrito,setCarrito}
 
         if(tallaSelected!=="" && colorSelected !==""){
             const auxitem = carrito
-            item.map((p) => {  
-                for(const j in p.productos){
-                    if(p.productos[j].color === colorSelected && p.productos[j].talla === tallaSelected ) {                        
-                        p.productos[j].stock = p.productos[j].stock-itemCount
-
+            for(let p in item){
+                for(const j in item[p].productos){
+                    if(item[p].productos[j].color === colorSelected && item[p].productos[j].talla === tallaSelected ) {                        
+                        item[p].productos[j].stock = item[p].productos[j].stock-itemCount
+            
                         let entro_c = 0
                         for(let c in auxitem){
-                            if(auxitem[c].id === p.id && p.productos[j].color === auxitem[c].color && p.productos[j].talla === auxitem[c].talla){
+                            if(auxitem[c].id === item[p].id && item[p].productos[j].color === auxitem[c].color && item[p].productos[j].talla === auxitem[c].talla){
                                 entro_c = 1
-                                auxitem[c].stock = p.productos[j].stock
+                                auxitem[c].stock = item[p].productos[j].stock
                                 auxitem[c].cartCount += itemCount
                             } 
                         }
                         if(entro_c === 0) {                            
                             auxitem.push({
-                                id:p.id,
-                                categoria:p.categoria,
-                                title:p.title,                                
-                                description:p.description,
-                                pictureUrl:p.pictureUrl,
+                                id:item[p].id,
+                                categoria:item[p].categoria,
+                                title:item[p].title,                                
+                                description:item[p].description,
+                                pictureUrl:item[p].pictureUrl,
                                 cartCount:itemCount,                            
-                                color:p.productos[j].color,
-                                talla:p.productos[j].talla,
-                                stock:p.productos[j].stock,  
-                                price:p.productos[j].price,  
-                                ventas:p.productos[j].ventas
+                                color:item[p].productos[j].color,
+                                talla:item[p].productos[j].talla,
+                                stock:item[p].productos[j].stock,  
+                                price:item[p].productos[j].price,  
+                                ventas:item[p].productos[j].ventas
                             })
                         }                        
                         setCarrito(auxitem)
                     }                    
-                }                
-            })   
+                } 
+            }
+         
         }
         
         if(stock>1){
@@ -91,22 +91,20 @@ const ItemDetail = ({item, totalCartCount, setTotalCartCount,carrito,setCarrito}
 
     const mostrarStock = () => {
         if(tallaSelected!=="" && colorSelected !==""){
-            item.map((p) => {            
-                for(const j in p.productos){
-                    if(p.productos[j].color === colorSelected && p.productos[j].talla === tallaSelected ) {
-                        setStock(p.productos[j].stock) 
-                        setPrecio(p.productos[j].price)
-                        if(p.productos[j].stock>1){
+            for(let p in item){
+                for(const j in item[p].productos){
+                    if(item[p].productos[j].color === colorSelected && item[p].productos[j].talla === tallaSelected ) {
+                        setStock(item[p].productos[j].stock) 
+                        setPrecio(item[p].productos[j].price)
+                        if(item[p].productos[j].stock>1){
                             setBotonDisabled(false)
                         } else {
                             setBotonDisabled(true)
                         }                       
                     }                    
-                }  
-            })
-        }
-
-        
+                } 
+            }            
+        }        
     }
 
     const load_cart = () => {
@@ -122,37 +120,39 @@ const ItemDetail = ({item, totalCartCount, setTotalCartCount,carrito,setCarrito}
 
         let color = []
         let talla = []
-        item.map((p) => {            
-            for(const j in p.productos){
+        for(let p in item){
+            for(const j in item[p].productos){
                 if(color.length===0){
-                    color.push(p.productos[j].color)
+                    color.push(item[p].productos[j].color)
                 } else {
                     let entro_c=0
                     for (const c of color){
-                        if(c===p.productos[j].color){
+                        if(c===item[p].productos[j].color){
                             entro_c=1
                         }
                     }
                     if(entro_c===0){
-                        color.push(p.productos[j].color)
+                        color.push(item[p].productos[j].color)
                     }
                 }  
-
+        
                 if(talla.length===0){
-                    talla.push(p.productos[j].talla)
+                    talla.push(item[p].productos[j].talla)
                 } else {
                     let entro_t=0
                     for (const c of talla){
-                        if(c===p.productos[j].talla){
+                        if(c===item[p].productos[j].talla){
                             entro_t=1
                         }
                     }
                     if(entro_t===0){
-                        talla.push(p.productos[j].talla)
+                        talla.push(item[p].productos[j].talla)
                     }
                 }  
-            }  
-        })
+            } 
+        }
+               
+        
         const optionColor = color.map((c) => (<option key={c} value={c}>{c}</option>))
         const optionTalla = talla.map((c) => (<option key={c} value={c}>{c}</option>))
         
