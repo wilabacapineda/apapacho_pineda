@@ -94,8 +94,7 @@ export const CartProvider = ({children}) => {
                     }
                 }        
             })                         
-        })
-        console.log(productos)
+        })        
         setTotalCartCount(0)
         setCarrito([])                               
     }
