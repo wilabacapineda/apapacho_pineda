@@ -1,75 +1,23 @@
-import { useEffect } from 'react'
-import {useState} from 'react'
-import ItemCount from '../ItemCount/ItemCount'
+import { useEffect, useState, useContext } from 'react'
+import { CartContext } from './../../context/CartContext'
+import ItemCount from './../ItemCount/ItemCount'
 import loading from './Loading_icon.gif'
 import './styles.css'
 
-const ItemDetail = ({item, totalCartCount, setTotalCartCount,carrito,setCarrito}) => {
+const ItemDetail = ({item}) => {
+    const cartC = useContext(CartContext)
     const [cartCount, setCartCount]= useState(1)
     const [stock, setStock] = useState()
     const [tallaSelected, setTallaSelected] = useState("")
     const [colorSelected, setColorSelected] = useState("")
     const [botonDisabled,setBotonDisabled] = useState(true)
     const [precio, setPrecio] = useState(0)
-    
-    useEffect( () => {
-        if(stock<=0){
-            setCartCount(0)
-        } else {
-            setCartCount(1)
-        }
-    },[stock])
-
-    useEffect( () => {        
-        mostrarStock()
-    },[tallaSelected])
-
-    useEffect( () => {
-        mostrarStock()
-    },[colorSelected])
 
     const addCart = (itemCount) => {
         setCartCount(itemCount)
         setStock(stock-itemCount)
-        setTotalCartCount(parseInt(totalCartCount)+parseInt(itemCount))     
-
-        if(tallaSelected!=="" && colorSelected !==""){
-            const auxitem = carrito
-            for(let p in item){
-                for(const j in item[p].productos){
-                    if(item[p].productos[j].color === colorSelected && item[p].productos[j].talla === tallaSelected ) {                        
-                        item[p].productos[j].stock = item[p].productos[j].stock-itemCount
-            
-                        let entro_c = 0
-                        for(let c in auxitem){
-                            if(auxitem[c].id === item[p].id && item[p].productos[j].color === auxitem[c].color && item[p].productos[j].talla === auxitem[c].talla){
-                                entro_c = 1
-                                auxitem[c].stock = item[p].productos[j].stock
-                                auxitem[c].cartCount += itemCount
-                            } 
-                        }
-                        if(entro_c === 0) {                            
-                            auxitem.push({
-                                id:item[p].id,
-                                categoria:item[p].categoria,
-                                title:item[p].title,                                
-                                description:item[p].description,
-                                pictureUrl:item[p].pictureUrl,
-                                cartCount:itemCount,                            
-                                color:item[p].productos[j].color,
-                                talla:item[p].productos[j].talla,
-                                stock:item[p].productos[j].stock,  
-                                price:item[p].productos[j].price,  
-                                ventas:item[p].productos[j].ventas
-                            })
-                        }                        
-                        setCarrito(auxitem)
-                    }                    
-                } 
-            }
-         
-        }
-        
+        cartC.addItem(item,itemCount,tallaSelected,colorSelected)
+                
         if(stock>1){
             setBotonDisabled(false)
         } else {
@@ -104,14 +52,15 @@ const ItemDetail = ({item, totalCartCount, setTotalCartCount,carrito,setCarrito}
                     }                    
                 } 
             }            
-        }        
+
+        }       
     }
 
     const load_cart = () => {
         return (
             <div className='productoShop'>
                 <ItemCount disabled={botonDisabled} key={item.id} stock={stock} initial={1} cartCount={cartCount} setCartCount={setCartCount} onAdd={addCart} />
-                <div className="itemCarrito"> Stock {stock} | Total Productos en Carrito: {totalCartCount} </div>
+                <div className="itemCarrito"> Stock {stock} | Total Productos en Carrito: {cartC.totalCartCount} </div>
             </div>
         )
     }
@@ -150,8 +99,7 @@ const ItemDetail = ({item, totalCartCount, setTotalCartCount,carrito,setCarrito}
                     }
                 }  
             } 
-        }
-               
+        }              
         
         const optionColor = color.map((c) => (<option key={c} value={c}>{c}</option>))
         const optionTalla = talla.map((c) => (<option key={c} value={c}>{c}</option>))
@@ -189,6 +137,24 @@ const ItemDetail = ({item, totalCartCount, setTotalCartCount,carrito,setCarrito}
             </div>            
         )
     }
+    
+    useEffect( () => {    
+        mostrarStock()
+    },[tallaSelected])
+
+    useEffect( () => {  
+        mostrarStock()
+    },[colorSelected])
+
+    useEffect( () => {
+        if(stock<=0){
+            setCartCount(0)
+        } else {
+            setCartCount(1)
+        }
+    },[stock])
+
+    
 
     const resultado = Object.keys(item).length===0 ? load_img() : load_prod() 
 

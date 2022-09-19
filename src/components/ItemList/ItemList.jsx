@@ -17,11 +17,11 @@ const ItemList = ({items}) => {
 
     const resultado = Object.keys(items).length===0 ? load_img() : load_prod() 
 
-        return (
-            <>
-                {resultado}
-            </>
-        )    
+    return (
+        <>
+            {resultado}
+        </>
+    )    
 }
 
 export default ItemList

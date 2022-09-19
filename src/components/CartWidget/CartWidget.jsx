@@ -5,14 +5,14 @@ import {Link} from 'react-router-dom'
 
 import './styles.css'
 
-const CartWidget = ({totalCartCount, setTotalCartCount}) => {  
+const CartWidget = () => {  
   return (    
     
       <div className="cartWidget">  
           <img className="cartIcon" id="usuario" src={UserIcon} alt="Icono de Usuario"/>
           <Link to='/carrito' className='cartWidget'>
             <img className="cartIcon" src={CartIcon} alt="Icono de Carro" />
-            <span id="cartNumber"><CartNumber totalCartCount={totalCartCount} setTotalCartCount={setTotalCartCount} /></span>
+            <span id="cartNumber"><CartNumber /></span>
           </Link>         
       </div>
     

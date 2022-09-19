@@ -3,10 +3,11 @@ import Productos from './../Productos/productos'
 import {useState, useEffect} from 'react'
 import { useParams } from "react-router-dom"
 
-const ItemDetailContainer = ({totalCartCount, setTotalCartCount, carrito, setCarrito}) => {
+const ItemDetailContainer = () => {
     const[item, setItem] = useState([])
     const {id} = useParams()
-    useEffect(() => {
+
+    useEffect( () => {
         const getItem = new Promise((resolve,reject) => {
           setTimeout(() => {      
             resolve(Productos)
@@ -17,10 +18,11 @@ const ItemDetailContainer = ({totalCartCount, setTotalCartCount, carrito, setCar
           const itemAux = result.filter( (i) => parseInt(i.id) === parseInt(id))      
           setItem(itemAux)      
         })
-    }, [])
+
+    }, [id])
 
   return (
-    <div className="productPage"><ItemDetail item={item} totalCartCount={totalCartCount} setTotalCartCount={setTotalCartCount}  carrito={carrito} setCarrito={setCarrito} /></div>
+    <div className="productPage"><ItemDetail item={item} /></div>
   )
 }
 

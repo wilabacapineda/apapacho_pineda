@@ -1,13 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useContext } from 'react'
+import { CartContext } from '../../context/CartContext'
 
-const CartNumber = ({totalCartCount, setTotalCartCount}) => {
-    const [cartNumber, setCartNumber] = useState(totalCartCount)  
-    useEffect(() => {
-        setCartNumber(totalCartCount)
-    },[totalCartCount])
-    return <span>{cartNumber>0 ? cartNumber: ""}</span>
+const CartNumber = () => {
+    const cartC = useContext(CartContext)
+    return <span>{cartC.totalCartCount>0 ? cartC.totalCartCount: ""}</span>
     
 }
 
 export default CartNumber
-

@@ -4,7 +4,7 @@ import Menu from './../Menu/Menu';
 import CartWidget from '../CartWidget/CartWidget';
 import {NavLink} from 'react-router-dom'
 
-const NavBar = ({titulo, descripcion, totalCartCount, setTotalCartCount}) => {
+const NavBar = ({titulo, descripcion}) => {
     return (
         <div className='navbar'>
             <div className='logo'>
@@ -24,7 +24,7 @@ const NavBar = ({titulo, descripcion, totalCartCount, setTotalCartCount}) => {
                 </ul>
             </div>
             <div className='cart'>
-                <CartWidget totalCartCount={totalCartCount} setTotalCartCount={setTotalCartCount} />
+                <CartWidget />
             </div>
         </div>
     );

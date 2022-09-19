@@ -1,19 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { CartContext } from '../../context/CartContext'
 import loading from './Loading_icon.gif'
 import './styles.css'
 
-const Carrito = ({carrito,totalCartCount}) => {
-
-    const [carro, setCarro]= useState(<img src={loading} alt="loading" />) 
-      
+const Carrito = () => {
+    const cartC = useContext(CartContext)
+    const [carro, setCarro]= useState(<img src={loading} alt="loading" />)       
+    
     useEffect( () => {
         const getItems = new Promise((resolve,reject) => {
             setTimeout(() => {   
-                resolve(carrito)
+                resolve(cartC.carrito)
             }, 2000)
         })
-        getItems.then((result) => {            
-            const resultado = result.map((c) => (
+        getItems.then((carrito) => {            
+            const resultado = carrito.map((c) => (
                     <div key={'product_'+c.id+'_'+c.color+'_'+c.talla} id={'product_'+c.id} className='productCart'>
                         <div className='productCartImg'><img src={require('./'+c.pictureUrl)} alt={c.title} /></div>
                         <div className='productCartInfo'>
@@ -37,14 +38,14 @@ const Carrito = ({carrito,totalCartCount}) => {
                                 {resultado}
                             </div>
                             <div className='carritoRight'>
-                                <h3>Total de Productos {totalCartCount}</h3>
+                                <h3>Total de Productos {cartC.totalCartCount}</h3>
                             </div>
                         </div>                                                
                     </div>
                 </>
             )    
         })
-    },[])
+    },[cartC])
 
     return (
         <>
