@@ -62,8 +62,7 @@ export const CartProvider = ({children}) => {
 
     const removeItem = (itemId,tallaSelected,colorSelected) => {
         productos.then((results) => {
-            const producto = results.find((p) => p.id===itemId)
-            
+            const producto = results.find((p) => p.id===itemId)            
             const itemToRemoveCart = carrito.find((c) => c.id===itemId && c.talla === tallaSelected && c.color === colorSelected)            
             producto.stock+=itemToRemoveCart.cartCount
             for(const p in producto.productos){
@@ -85,9 +84,20 @@ export const CartProvider = ({children}) => {
     }
 
     const clear = () => {
-        carrito.forEach((c) => {
-            removeItem(c.id,c.talla,c.color)            
-        })  
+        productos.then((results) => {
+            carrito.forEach((c) => {
+                const producto = results.find((p) => p.id===c.id)            
+                producto.stock+=c.cartCount
+                for(const p in producto.productos){
+                    if(producto.productos[p].talla === c.talla && producto.productos[p].color === c.color){
+                        producto.productos[p].stock+=c.cartCount
+                    }
+                }        
+            })                         
+        })
+        console.log(productos)
+        setTotalCartCount(0)
+        setCarrito([])                               
     }
 
     return(
