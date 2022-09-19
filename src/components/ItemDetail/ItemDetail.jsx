@@ -23,11 +23,7 @@ const ItemDetail = ({item}) => {
         } else {
             setBotonDisabled(true)
         }
-    }
-
-    const load_img = () => {
-        return ( <img src={loading} alt="loading" /> )
-    }
+    }    
 
     const changeColor = (e) => {
         setColorSelected(e.target.value)
@@ -137,6 +133,10 @@ const ItemDetail = ({item}) => {
             </div>            
         )
     }
+
+    const load_img = () => {
+        return ( <div className="bodyLoading"><div className="loading"><img src={loading} alt="loading" /></div></div> )
+    }
     
     useEffect( () => {    
         mostrarStock()
@@ -154,12 +154,10 @@ const ItemDetail = ({item}) => {
         }
     },[stock])
 
-    
-
     const resultado = Object.keys(item).length===0 ? load_img() : load_prod() 
-
+    
     return (
-        <>
+        <>            
             {resultado}
         </>
     )    

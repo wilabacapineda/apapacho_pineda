@@ -1,22 +1,17 @@
 import ItemList from './../ItemList/ItemList'
-import Productos from './../Productos/productos'
-import {useState, useEffect} from 'react'
+import {useState, useEffect,useContext} from 'react'
+import { CartContext } from './../../context/CartContext'
 import { useParams } from "react-router-dom"
 import './styles.css'
 
 const ItemListContainer = () => {  
   const[items, setItems] = useState([])
   const {id} = useParams()
-  
+  const cartC = useContext(CartContext)
 
   useEffect(() => {
     setItems([])
-    const getItems = new Promise((resolve,reject) => {
-      setTimeout(() => {   
-        resolve(Productos)
-      }, 2000)
-    })
-
+    const getItems = cartC.getItems()
     getItems.then((result) => {
       const rangoPrecios = (idx) => {
         let min = 0

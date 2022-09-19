@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 const ItemList = ({items}) => {   
 
     const load_img = () => {
-        return ( <img src={loading} alt="loading" /> )
+        return ( <div className="bodyLoading"><div className="loading"><img src={loading} alt="loading" /></div></div> )
     }
     
     const load_prod = () => {

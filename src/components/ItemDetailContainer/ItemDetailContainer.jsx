@@ -1,24 +1,19 @@
 import ItemDetail from "./../ItemDetail/ItemDetail"
-import Productos from './../Productos/productos'
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useContext} from 'react'
 import { useParams } from "react-router-dom"
+import { CartContext } from "./../../context/CartContext"
 
 const ItemDetailContainer = () => {
     const[item, setItem] = useState([])
     const {id} = useParams()
+    const cartC = useContext(CartContext)
 
-    useEffect( () => {
-        const getItem = new Promise((resolve,reject) => {
-          setTimeout(() => {      
-            resolve(Productos)
-          }, 2000)
-        })
-    
-        getItem.then((result) => {
-          const itemAux = result.filter( (i) => parseInt(i.id) === parseInt(id))      
+    useEffect( () => {          
+      const getItems = cartC.getItems()
+      getItems.then((result) => {
+          const itemAux = result.filter( (i) => parseInt(i.id) === parseInt(id))                
           setItem(itemAux)      
-        })
-
+      })
     }, [id])
 
   return (
