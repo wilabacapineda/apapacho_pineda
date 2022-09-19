@@ -1,4 +1,6 @@
-.productPage .producto {
+.productPage {
+    padding-bottom: 2rem;
+} .productPage .producto {
     display: flex;
     flex-direction: column;
     align-content: center;
@@ -11,11 +13,15 @@
     align-content: center;
     align-items: center;
     flex-wrap: wrap;
+    justify-content: center;
 } .productPage .producto .productoItem .productoInfo {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    min-width: 250px;
+    max-width: 300px;
 }  .productPage .producto .productoItem img {
+    min-width: 250px;
     max-width: 300px;
 } .productPage .producto .productoItem h2{
     margin: 0;

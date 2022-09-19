@@ -26,8 +26,20 @@
     align-content: center;
     align-items: center;
     gap: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 } 
 
 .itemCarrito {
     color: black;
+}
+
+@media screen and (max-width:768px) {
+    .nProductos {
+        max-width: 90%;
+    }
+
+    .nProductos .producto .productoItem {
+        justify-content: center;        
+    }
 }

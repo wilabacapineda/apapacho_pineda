@@ -38,8 +38,9 @@ const Carrito = () => {
                                     {resultado}
                                 </div>
                                 <div className='carritoRight'>
-                                    <h3>Total de Productos {cartC.totalCartCount}</h3>
-                                    <h3>Total ${(carrito.reduce((acc,c) => acc + (c.cartCount * c.price),0)).toLocaleString()}</h3>
+                                    <h2>Total Carrito</h2>
+                                    <h5>Cantidad de Productos: {cartC.totalCartCount}</h5>
+                                    <h4>Total: ${(carrito.reduce((acc,c) => acc + (c.cartCount * c.price),0)).toLocaleString()}</h4>
                                     <div className='vaciarCarrito'>
                                         <button disabled={cartC.totalCartCount===0} className='botonLc' onClick={() => {cartC.clear()}}>Vaciar Carrito</button>
                                     </div>

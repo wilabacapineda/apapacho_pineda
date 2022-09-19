@@ -56,3 +56,13 @@
     color: black;
     text-decoration: none;
 }
+@media screen and (max-width:768px) {
+    .navbar {
+        grid-template-areas: "logo cart"
+                            "menu menu";
+        grid-template-columns: 0.85fr 0.15fr
+    }
+    .logo, .menu, .cart {
+        padding: 0 1rem;
+    }
+}
