@@ -116,7 +116,7 @@ const productos = [
             "producto_5": {
                 "talla":"S",
                 "color":"Gris",
-                "stock":2,
+                "stock":0,
                 "price":10000,
                 "ventas":1
             },

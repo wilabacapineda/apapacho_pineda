@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react'
 import { CartContext } from './../../context/CartContext'
 import ItemCount from './../ItemCount/ItemCount'
+import {Link} from 'react-router-dom'
 import loading from './Loading_icon.gif'
 import './styles.css'
 
@@ -12,6 +13,7 @@ const ItemDetail = ({item}) => {
     const [colorSelected, setColorSelected] = useState("")
     const [botonDisabled,setBotonDisabled] = useState(true)
     const [precio, setPrecio] = useState(0)
+    const [endCart, setEndCart] = useState(false)
 
     const addCart = (itemCount) => {
         setCartCount(itemCount)
@@ -23,15 +25,29 @@ const ItemDetail = ({item}) => {
         } else {
             setBotonDisabled(true)
         }
+        setEndCart(true)
     }    
 
     const load_cart = () => {
-        return (
-            <div className='productoShop'>
-                <ItemCount disabled={botonDisabled} key={item.id} stock={stock} initial={1} cartCount={cartCount} setCartCount={setCartCount} onAdd={addCart} />
-                <div className="itemCarrito"> Stock {stock} | Total Productos en Carrito: {cartC.totalCartCount} </div>
-            </div>
-        )
+        const resultado = endCart ? 
+            (
+                <div className='productoShop'>
+                    <span>¿Desea continuar su compra?</span>
+                    <div className='cartEnd'>
+                        <Link to={'/tienda'}><button className='botonLc'>Continuar</button></Link>   
+                        <Link to={'/cart'}><button className='botonLc'>Terminar</button></Link>                           
+                    </div>
+                    
+                </div>
+            )
+            :
+            (                
+                <div className='productoShop'>
+                    <ItemCount disabled={botonDisabled} key={item.id} stock={stock} initial={1} cartCount={cartCount} setCartCount={setCartCount} onAdd={addCart} />
+                    <div className="itemCarrito"> Stock {stock} | Total Productos en Carrito: {cartC.totalCartCount} </div>
+                </div>
+            )
+        return resultado
     }
 
     const load_prod = () => {
@@ -40,33 +56,35 @@ const ItemDetail = ({item}) => {
         let talla = []
         for(let p in item){
             for(const j in item[p].productos){
-                if(color.length===0){
-                    color.push(item[p].productos[j].color)
-                } else {
-                    let entro_c=0
-                    for (const c of color){
-                        if(c===item[p].productos[j].color){
-                            entro_c=1
-                        }
-                    }
-                    if(entro_c===0){
+                if (item[p].productos[j].stock>0) {
+                    if(color.length===0){
                         color.push(item[p].productos[j].color)
-                    }
-                }  
-        
-                if(talla.length===0){
-                    talla.push(item[p].productos[j].talla)
-                } else {
-                    let entro_t=0
-                    for (const c of talla){
-                        if(c===item[p].productos[j].talla){
-                            entro_t=1
+                    } else {
+                        let entro_c=0
+                        for (const c of color){
+                            if(c===item[p].productos[j].color){
+                                entro_c=1
+                            }
                         }
-                    }
-                    if(entro_t===0){
+                        if(entro_c===0){
+                            color.push(item[p].productos[j].color)
+                        }
+                    }  
+            
+                    if(talla.length===0){
                         talla.push(item[p].productos[j].talla)
-                    }
-                }  
+                    } else {
+                        let entro_t=0
+                        for (const c of talla){
+                            if(c===item[p].productos[j].talla){
+                                entro_t=1
+                            }
+                        }
+                        if(entro_t===0){
+                            talla.push(item[p].productos[j].talla)
+                        }
+                    }  
+                }                
             } 
         }              
         
@@ -97,12 +115,11 @@ const ItemDetail = ({item}) => {
                             </select>
                         </div>
                         <div className='productoInfoPrice'>
-                            {precio>0 ? 'Precio: $'+precio.toLocaleString() : ""}
+                            {precio>0 && 'Precio: $'+precio.toLocaleString()}
                         </div>                                             
-                        {stock>=0 ? load_cart() : ""}                        
+                        {stock>=0 && load_cart()}                        
                     </div>                    
-                </div>   
-                   
+                </div>                      
             </div>            
         )
     }
@@ -111,7 +128,7 @@ const ItemDetail = ({item}) => {
         return ( <div className="bodyLoading"><div className="loading"><img src={loading} alt="loading" /></div></div> )
     }
     
-    useEffect( () => {    
+    useEffect( () => {            
         if(tallaSelected!=="" && colorSelected !==""){
             for(let p in item){
                 for(const j in item[p].productos){
