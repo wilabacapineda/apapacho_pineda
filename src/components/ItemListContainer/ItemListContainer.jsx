@@ -53,10 +53,11 @@ const ItemListContainer = () => {
   return (
     <>      
       <div className="nProductos">
+        { id===undefined ? (<h2>Productos Tienda</h2>) : (<h2 className='capitalizar'>Productos Categoria: {id.replace("-"," ")}</h2>) }        
         <ItemList items={items} />        
       </div>            
     </>    
   )
 }
 
-export default ItemListContainer
+export default ItemListContainer  
