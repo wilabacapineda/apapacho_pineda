@@ -47,7 +47,7 @@ const Cart = () => {
                                     {resultado}
                                 </div>
                                 <div className='carritoRight'>
-                                    <h2>Total Carrito</h2>
+                                    <h2>Resumen Carrito</h2>
                                     <h5>Cantidad de Productos: {cartC.totalCartCount}</h5>
                                     <h4>Total: ${(cartC.carrito.reduce((acc,c) => acc + (c.cartCount * c.price),0)).toLocaleString()}</h4>
                                     <div className='vaciarCarrito'>
