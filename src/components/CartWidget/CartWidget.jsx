@@ -6,8 +6,7 @@ import {Link} from 'react-router-dom'
 import './styles.css'
 
 const CartWidget = () => {  
-  return (    
-    
+  return (        
       <div className="cartWidget">  
           <img className="cartIcon" id="usuario" src={UserIcon} alt="Icono de Usuario"/>
           <Link to='/carrito' className='cartWidget'>
@@ -15,8 +14,6 @@ const CartWidget = () => {
             <span id="cartNumber"><CartNumber /></span>
           </Link>         
       </div>
-    
-    
   )
 }
 

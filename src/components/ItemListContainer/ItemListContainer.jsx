@@ -47,6 +47,7 @@ const ItemListContainer = () => {
       })
       setItems(itemsByX) 
     })
+    return () => {}
   }, [id])
 
   return (

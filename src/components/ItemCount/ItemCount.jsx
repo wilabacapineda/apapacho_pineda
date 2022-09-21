@@ -20,6 +20,7 @@ const ItemCount = ({stock, initial, onAdd}) => {
         } else {
             setItemCount(1)
         }
+        return () => {}     
     },[stock])
     
   return (

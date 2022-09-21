@@ -14,6 +14,7 @@ const ItemDetailContainer = () => {
           const itemAux = result.filter( (i) => parseInt(i.id) === parseInt(id))                
           setItem(itemAux)      
       })
+      return () => {}
     }, [id])
 
   return (

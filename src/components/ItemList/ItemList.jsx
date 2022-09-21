@@ -13,13 +13,11 @@ const ItemList = ({items}) => {
             (p) => p.stock>=0 ? (<Link to={'/tienda/item/'+p.id} key={'itemLink'+p.id}><Item key={'item_'+p.id} id={'product_'+p.id} title={p.title} price={p.price} pictureUrl={p.pictureUrl} s={p.stock} /></Link>) : ""  
         )
         return resultado 
-    }
-
-    const resultado = Object.keys(items).length===0 ? load_img() : load_prod() 
+    }    
 
     return (
         <>
-            {resultado}
+            {Object.keys(items).length===0 ? load_img() : load_prod() }
         </>
     )    
 }

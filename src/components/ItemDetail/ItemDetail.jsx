@@ -25,33 +25,6 @@ const ItemDetail = ({item}) => {
         }
     }    
 
-    const changeColor = (e) => {
-        setColorSelected(e.target.value)
-    }
-
-    const changeTalla = (e) => {
-        setTallaSelected(e.target.value)
-    }
-
-    const mostrarStock = () => {
-        if(tallaSelected!=="" && colorSelected !==""){
-            for(let p in item){
-                for(const j in item[p].productos){
-                    if(item[p].productos[j].color === colorSelected && item[p].productos[j].talla === tallaSelected ) {
-                        setStock(item[p].productos[j].stock) 
-                        setPrecio(item[p].productos[j].price)
-                        if(item[p].productos[j].stock>1){
-                            setBotonDisabled(false)
-                        } else {
-                            setBotonDisabled(true)
-                        }                       
-                    }                    
-                } 
-            }            
-
-        }       
-    }
-
     const load_cart = () => {
         return (
             <div className='productoShop'>
@@ -111,14 +84,14 @@ const ItemDetail = ({item}) => {
                         <div className="productoInfoDesc">{item[0].description}</div>
                         <div className='productoInfoColor'>
                             <span>Color:</span>
-                            <select key={'selectColor'} onChange={changeColor} defaultValue={colorSelected} name="color" id="color">
+                            <select key={'selectColor'} onChange={ (e) => setColorSelected(e.target.value) } defaultValue={colorSelected} name="color" id="color">
                                 <option value="" disabled>Seleccione un Color</option>
                                 {optionColor}
                             </select>
                         </div>
                         <div className='productoInfoTalla'>
                             <span>Talla:</span>
-                            <select key={'selectTalla'} onChange={changeTalla} defaultValue={tallaSelected} name="talla" id="talla">
+                            <select key={'selectTalla'} onChange={ (e) => setTallaSelected(e.target.value) } defaultValue={tallaSelected} name="talla" id="talla">
                                 <option value="" disabled>Seleccione un Talla</option>
                                 {optionTalla}
                             </select>
@@ -128,7 +101,7 @@ const ItemDetail = ({item}) => {
                         </div>                                             
                         {stock>=0 ? load_cart() : ""}                        
                     </div>                    
-                </div>    
+                </div>   
                    
             </div>            
         )
@@ -139,12 +112,23 @@ const ItemDetail = ({item}) => {
     }
     
     useEffect( () => {    
-        mostrarStock()
-    },[tallaSelected])
-
-    useEffect( () => {  
-        mostrarStock()
-    },[colorSelected])
+        if(tallaSelected!=="" && colorSelected !==""){
+            for(let p in item){
+                for(const j in item[p].productos){
+                    if(item[p].productos[j].color === colorSelected && item[p].productos[j].talla === tallaSelected ) {
+                        setStock(item[p].productos[j].stock) 
+                        setPrecio(item[p].productos[j].price)
+                        if(item[p].productos[j].stock>1){
+                            setBotonDisabled(false)
+                        } else {
+                            setBotonDisabled(true)
+                        }                       
+                    }                    
+                } 
+            }  
+        }  
+        return () => {}
+    },[tallaSelected,colorSelected])
 
     useEffect( () => {
         if(stock<=0){
@@ -152,13 +136,12 @@ const ItemDetail = ({item}) => {
         } else {
             setCartCount(1)
         }
-    },[stock])
-
-    const resultado = Object.keys(item).length===0 ? load_img() : load_prod() 
+        return () => {}
+    },[stock])    
     
     return (
         <>            
-            {resultado}
+            { Object.keys(item).length===0 ? load_img() : load_prod() }
         </>
     )    
 }

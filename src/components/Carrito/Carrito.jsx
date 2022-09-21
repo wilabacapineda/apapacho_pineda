@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import { CartContext } from '../../context/CartContext'
+import {Link} from 'react-router-dom'
 import loading from './Loading_icon.gif'
 import trash_icon from './trash-solid.svg'
 import './styles.css'
@@ -15,9 +16,11 @@ const Carrito = () => {
             getItems.then((carrito) => {            
                 const resultado = carrito.map((c) => (
                         <div key={'product_'+c.id+'_'+c.color+'_'+c.talla} id={'product_'+c.id} className='productCart'>
-                            <div className='productCartImg'><img src={require('./'+c.pictureUrl)} alt={c.title} /></div>
+                            <div className='productCartImg'>
+                                <Link to={'/tienda/item/'+c.id} key={'itemLinkImg'+c.id}><img src={require('./'+c.pictureUrl)} alt={c.title} /></Link>                                
+                            </div>
                             <div className='productCartInfo'>
-                                <h2 className='productCartName'>{c.title} {c.talla}</h2>  
+                                <h2 className='productCartName'><Link to={'/tienda/item/'+c.id} key={'itemLinkTitle'+c.id}>{c.title} {c.talla}</Link></h2>  
                                 <div className='productCartDetail'>Talla: {c.talla} | Color: {c.color}</div>  
                                 <div className='productCartDetailTitle'>
                                     <div className='productCartDetailTValue'><span>Valor</span><span>${c.price.toLocaleString()}</span></div>
@@ -51,7 +54,8 @@ const Carrito = () => {
                 )    
             })
             cartC.setBol(false)    
-        }, 2000)        
+        }, 2000)   
+        return () => {}     
     },[cartC.carrito])
 
     return (
