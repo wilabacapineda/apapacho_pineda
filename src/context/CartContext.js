@@ -24,8 +24,8 @@ export const CartProvider = ({children}) => {
             const auxitem = carrito
             for(let p in item){
                 for(const j in item[p].productos){
-                    if(item[p].productos[j].color === colorSelected && item[p].productos[j].talla === tallaSelected ) {                        
-                        item[p].productos[j].stock = item[p].productos[j].stock-quantity                            
+                    if(item[p].productos[j].color === colorSelected && item[p].productos[j].talla === tallaSelected ) {                                                
+                        item[p].productos[j].stock -= quantity                            
                         if(isInCart(item[p].id,item[p].productos[j].talla,item[p].productos[j].color)){
                             for(let c in auxitem){
                                 if(auxitem[c].id === item[p].id && item[p].productos[j].color === auxitem[c].color && item[p].productos[j].talla === auxitem[c].talla){
@@ -68,12 +68,12 @@ export const CartProvider = ({children}) => {
                     if(item.stock>auxStock){
                         item.stock = auxStock
                     }
-                    producto.stock-=dif
+                    
                     item.cartCount = parseInt(value)
 
                     for(const p in producto.productos){
-                        if(producto.productos[p].talla === item.talla && producto.productos[p].color === item.color){
-                            producto.productos[p].stock-=item.stock
+                        if(producto.productos[p].talla === item.talla && producto.productos[p].color === item.color){                            
+                            producto.productos[p].stock-=dif                            
                             //itemToSetNumberOfItem.cartCount > value ? producto.productos[p].stock-=(parseInt(itemToSetNumberOfItem.cartCount)-parseInt(value)) : producto.productos[p].stock+=(parseInt(value)-parseInt(itemToSetNumberOfItem.cartCount))           
                         }
                     }                                    
@@ -95,7 +95,7 @@ export const CartProvider = ({children}) => {
             productos.then((results) => {
                 const producto = results.find((p) => p.id===itemId)            
                 const itemToRemoveCart = carrito.find((c) => c.id===itemId && c.talla === tallaSelected && c.color === colorSelected)            
-                producto.stock+=itemToRemoveCart.cartCount
+                
                 for(const p in producto.productos){
                     if(producto.productos[p].talla === itemToRemoveCart.talla && producto.productos[p].color === itemToRemoveCart.color){
                         producto.productos[p].stock+=itemToRemoveCart.cartCount
@@ -122,7 +122,7 @@ export const CartProvider = ({children}) => {
             productos.then((results) => {
                 carrito.forEach((c) => {
                     const producto = results.find((p) => p.id===c.id)            
-                    producto.stock+=c.cartCount
+                    
                     for(const p in producto.productos){
                         if(producto.productos[p].talla === c.talla && producto.productos[p].color === c.color){
                             producto.productos[p].stock+=c.cartCount
