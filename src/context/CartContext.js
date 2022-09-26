@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {db} from './../../src/utils/firebase'
 import {collection, getDocs, query,where} from 'firebase/firestore'
 
@@ -21,7 +21,7 @@ export const CartProvider = ({children}) => {
                 )
                 getDocs(q).then( resp => {
                     const auxitem = carrito
-                    resp.docs.map( p => {
+                    resp.docs.forEach( p => {
                         if(isInCart(item.id,p.data().talla,p.data().color)){                            
                             for(let c in auxitem){
                                 if(auxitem[c].id === item.id && p.data().color === auxitem[c].color && p.data().talla === auxitem[c].talla){
@@ -55,7 +55,7 @@ export const CartProvider = ({children}) => {
             where("talla","==",item.talla)
         )
         getDocs(q).then( resp => {
-            resp.docs.map( p => {
+            resp.docs.forEach( p => {
                 if(parseInt(value)>=0 && parseInt(value)<=p.data().stock){
                     const dif = parseInt(value) - parseInt(item.cartCount)
                     if(dif!==0){

@@ -25,7 +25,7 @@ const ItemDetail = ({item}) => {
             getDocs(q).then( resp => {  
                 let color = []
                 let talla = []
-                resp.docs.map( p => {
+                resp.docs.forEach( p => {
                     if (p.data().stock>0) {
                         if(color.length===0){
                             color.push(p.data().color)
@@ -144,7 +144,7 @@ const ItemDetail = ({item}) => {
             if(Object.keys(item).length!==0){
                 const q = collection(db,'items',item.id,'productos')             
                 getDocs(q).then( resp => {                      
-                    resp.docs.map( p => {                        
+                    resp.docs.forEach( p => {                        
                         if(p.data().color === colorSelected && p.data().talla === tallaSelected ) {
 
                             cartC.isInCart(item.id,tallaSelected,colorSelected) ? setStock(p.data().stock-(cartC.carrito.find( (c) => c.id===item.id && c.talla === tallaSelected && c.color === colorSelected).cartCount)) : setStock(p.data().stock)                             

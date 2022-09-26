@@ -19,7 +19,7 @@ const ItemListContainer = () => {
         const response = await getDocs(q)            
         const productos = response.docs.map(doc => {              
             const newCat = {
-                ... doc.data(),
+                ...doc.data(),
                 id: doc.id,
             }
             return newCat
@@ -30,7 +30,7 @@ const ItemListContainer = () => {
         const response = await getDocs(q)            
         const productos = response.docs.map(doc => {              
             const newCat = {
-                ... doc.data(),
+                ...doc.data(),
                 id: doc.id,
             }
             return newCat
