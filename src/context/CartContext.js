@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import Productos from './../../src/components/Productos/productos'
 import {db} from './../../src/utils/firebase'
-import {doc,getDoc, collection, getDocs, query,where} from 'firebase/firestore'
-import { async } from '@firebase/util'
+import {collection, getDocs, query,where} from 'firebase/firestore'
 
 export const CartContext = React.createContext()
 
