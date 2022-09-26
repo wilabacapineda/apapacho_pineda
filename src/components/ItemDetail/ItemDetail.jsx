@@ -59,6 +59,7 @@ const ItemDetail = ({item}) => {
                 setOptionColor(color.map((c) => (<option key={c} value={c}>{c}</option>)))
                 setOptionTalla(talla.map((c) => (<option key={c} value={c}>{c}</option>)))    
             })
+            
         }        
         return(() => {})
     },[item])
@@ -76,25 +77,27 @@ const ItemDetail = ({item}) => {
         setEndCart(true)
     }    
 
-    const load_cart = () => {
+    const load_cart = () => {       
+
         const resultado = endCart ? 
-            (
-                <div className='productoShop'>
-                    <span>¿Desea continuar su compra?</span>
-                    <div className='cartEnd'>
-                        <Link to={'/tienda'}><button className='botonLc'>Continuar</button></Link>   
-                        <Link to={'/cart'}><button className='botonLc'>Terminar</button></Link>                           
-                    </div>
-                    
+        (
+            <div className='productoShop'>
+                <span>¿Desea continuar su compra?</span>
+                <div className='cartEnd'>
+                    <Link to={'/tienda'}><button className='botonLc'>Continuar</button></Link>   
+                    <Link to={'/cart'}><button className='botonLc'>Terminar</button></Link>                           
                 </div>
-            )
-            :
-            (                
-                <div className='productoShop'>
-                    <ItemCount disabled={botonDisabled} key={item.id} stock={stock} initial={1} cartCount={cartCount} setCartCount={setCartCount} onAdd={addCart} />
-                    <div className="itemCarrito"> Stock {stock} | Total Productos en Carrito: {cartC.totalCartCount} </div>
-                </div>
-            )
+                
+            </div>
+        )
+        :
+        (           
+            <div className='productoShop'>
+                <ItemCount disabled={botonDisabled} key={item.id} stock={stock} initial={1} cartCount={cartCount} setCartCount={setCartCount} onAdd={addCart} />
+                <div className="itemCarrito"> Stock {stock} | Total Productos en Carrito: {cartC.totalCartCount} </div>
+            </div>
+        )
+        
         return resultado
     }
 
@@ -143,7 +146,8 @@ const ItemDetail = ({item}) => {
                 getDocs(q).then( resp => {                      
                     resp.docs.map( p => {                        
                         if(p.data().color === colorSelected && p.data().talla === tallaSelected ) {
-                            setStock(p.data().stock) 
+
+                            cartC.isInCart(item.id,tallaSelected,colorSelected) ? setStock(p.data().stock-(cartC.carrito.find( (c) => c.id===item.id && c.talla === tallaSelected && c.color === colorSelected).cartCount)) : setStock(p.data().stock)                             
                             setPrecio(p.data().price)
                             if(p.data().stock>1){
                                 setBotonDisabled(false)
@@ -153,7 +157,7 @@ const ItemDetail = ({item}) => {
                         }
                     })                                   
                 })
-            }        
+            }                    
         }  
         return () => {}
     },[tallaSelected,colorSelected])
