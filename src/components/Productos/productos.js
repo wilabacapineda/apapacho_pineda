@@ -43,7 +43,7 @@ const productos = [
         "categoria":"poleron-capucha",
         "title":"Poleron Amapola",
         "price-range":"$20.000-$25.000",
-        "description":"Poleron modelo Amaranta",
+        "description":"Poleron modelo Amapola",
         "pictureUrl":"ModeloAmapola.jpg",
         "productos": {
             "producto_1": {
@@ -269,7 +269,7 @@ const productos = [
             "producto_4":{
                 "talla":"XL",
                 "color":"Violeta",
-                "stock":2,
+                "stock":2,  
                 "price":22500,
                 "ventas":1
             }

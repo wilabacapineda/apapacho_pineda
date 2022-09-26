@@ -1,87 +1,78 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Productos from './../../src/components/Productos/productos'
+import {db} from './../../src/utils/firebase'
+import {doc,getDoc, collection, getDocs, query,where} from 'firebase/firestore'
+import { async } from '@firebase/util'
+
 export const CartContext = React.createContext()
 
 
 export const CartProvider = ({children}) => {
     const [totalCartCount, setTotalCartCount]= useState(0)
     const [carrito, setCarrito]= useState([])        
-    const [loadBol, setLoadBol]= useState(true)        
-
-    const getItems = () => {
-        const productos = new Promise((resolve,reject) => {
-            setTimeout(() => {   
-              resolve(Productos)
-            }, 2000)
-        })
-        return productos        
-    } 
-    const productos = getItems()
+    const [loadBol, setLoadBol]= useState(true)     
 
     const addItem = (item,quantity,tallaSelected,colorSelected) => {
-        setTotalCartCount(parseInt(totalCartCount)+parseInt(quantity))             
-        if(tallaSelected!=="" && colorSelected !==""){
-            const auxitem = carrito
-            for(let p in item){
-                for(const j in item[p].productos){
-                    if(item[p].productos[j].color === colorSelected && item[p].productos[j].talla === tallaSelected ) {                                                
-                        item[p].productos[j].stock -= quantity                            
-                        if(isInCart(item[p].id,item[p].productos[j].talla,item[p].productos[j].color)){
+        setTotalCartCount(parseInt(totalCartCount)+parseInt(quantity))    
+        if(tallaSelected!=="" && colorSelected !==""){            
+            if(Object.keys(item).length!==0){
+                const q = query(
+                    collection(db,"items",item.id,'productos'),
+                    where("color","==",colorSelected),
+                    where("talla","==",tallaSelected)
+                )
+                getDocs(q).then( resp => {
+                    const auxitem = carrito
+                    resp.docs.map( p => {
+                        if(isInCart(item.id,p.data().talla,p.data().color)){                            
                             for(let c in auxitem){
-                                if(auxitem[c].id === item[p].id && item[p].productos[j].color === auxitem[c].color && item[p].productos[j].talla === auxitem[c].talla){
-                                    auxitem[c].stock = item[p].productos[j].stock
+                                if(auxitem[c].id === item.id && p.data().color === auxitem[c].color && p.data().talla === auxitem[c].talla){
                                     auxitem[c].cartCount += quantity
                                 } 
                             }
                         } else {
                             auxitem.push({
-                                id:item[p].id,
-                                categoria:item[p].categoria,
-                                title:item[p].title,                                
-                                description:item[p].description,
-                                pictureUrl:item[p].pictureUrl,
+                                id:item.id,
+                                categoria:item.categoria,
+                                title:item.title,                                
+                                pictureUrl:item.pictureUrl,
                                 cartCount:quantity,                            
-                                color:item[p].productos[j].color,
-                                talla:item[p].productos[j].talla,
-                                stock:item[p].productos[j].stock,  
-                                price:item[p].productos[j].price,  
-                                ventas:item[p].productos[j].ventas
+                                color:p.data().color,
+                                talla:p.data().talla,
+                                price:p.data().price,  
                             })
                         }
-                    }                    
-                } 
-            }
-            setCarrito(auxitem)       
+                    })
+                    setCarrito(auxitem)
+                })                
+            }            
         }
     }
 
-    const setNumberOfItem = (item, value) => {        
-        productos.then((results) => {
-            const producto = results.find((p) => p.id===item.id)  
-            //const itemToSetNumberOfItem = carrito.find((c) => c.id===itemId && c.talla === tallaSelected && c.color === colorSelected)                                                
-            const auxStock = parseInt(item.stock) + parseInt(item.cartCount)
-            if(parseInt(value)>=0 && parseInt(value)<=auxStock){
-                const dif = parseInt(value) - parseInt(item.cartCount)
-                if(dif!==0){
-                                             
-                    item.stock -= dif
-                    if(item.stock>auxStock){
-                        item.stock = auxStock
-                    }
-                    
-                    item.cartCount = parseInt(value)
-
-                    for(const p in producto.productos){
-                        if(producto.productos[p].talla === item.talla && producto.productos[p].color === item.color){                            
-                            producto.productos[p].stock-=dif                            
-                            //itemToSetNumberOfItem.cartCount > value ? producto.productos[p].stock-=(parseInt(itemToSetNumberOfItem.cartCount)-parseInt(value)) : producto.productos[p].stock+=(parseInt(value)-parseInt(itemToSetNumberOfItem.cartCount))           
+    //falta actualizar setNumberOfItem
+    const setNumberOfItem = (item, value) => {   
+        const q = query(
+            collection(db,"items",item.id,'productos'),
+            where("color","==",item.color),
+            where("talla","==",item.talla)
+        )
+        getDocs(q).then( resp => {
+            resp.docs.map( p => {
+                if(parseInt(value)>=0 && parseInt(value)<=p.data().stock){
+                    const dif = parseInt(value) - parseInt(item.cartCount)
+                    if(dif!==0){
+                        item.stock -= dif
+                        if(item.stock>p.data().stock){
+                            item.stock = p.data().stock
                         }
-                    }                                    
-                    setTotalCartCount(totalCartCount+dif)
-                    setCarrito(carrito)                     
+                        item.cartCount = parseInt(value)
+                        setTotalCartCount(totalCartCount+dif)
+                        setCarrito(carrito)       
+                        console.log(carrito)                  
+                    }
                 }
-            }                                      
-        })        
+            })
+        })       
     }
 
     const isInCart = (id,tallaSelected,colorSelected) => {
@@ -89,47 +80,25 @@ export const CartProvider = ({children}) => {
         return ( resultado ? true : false)        
     }
 
-    const removeItem = (itemId,tallaSelected,colorSelected) => {
-        setLoadBol(true)    
+    const removeItem = (item) => {
+        setLoadBol(true)           
         setTimeout(() => {   
-            productos.then((results) => {
-                const producto = results.find((p) => p.id===itemId)            
-                const itemToRemoveCart = carrito.find((c) => c.id===itemId && c.talla === tallaSelected && c.color === colorSelected)            
-                
-                for(const p in producto.productos){
-                    if(producto.productos[p].talla === itemToRemoveCart.talla && producto.productos[p].color === itemToRemoveCart.color){
-                        producto.productos[p].stock+=itemToRemoveCart.cartCount
-                    }
-                }            
-                
-                const resultado = carrito.filter( (c) => {                
-                    if(c.id===itemId && c.talla === tallaSelected && c.color === colorSelected){
-                        return null
-                    } else {
-                        return c
-                    }                
-                } )
-                setTotalCartCount(totalCartCount-itemToRemoveCart.cartCount)
-                setCarrito(resultado)                               
-            })
+            setTotalCartCount(totalCartCount-item.cartCount)
+            const resultado = carrito.filter( (c) => {                
+                if(c.id===item.id && c.talla === item.talla && c.color === item.color){
+                    return null
+                } else {
+                    return c
+                }                
+            } )
+            setCarrito(resultado) 
             setLoadBol(false)    
         }, 1000)   
     }
 
     const clear = () => {
         setLoadBol(true)    
-        setTimeout(() => { 
-            productos.then((results) => {
-                carrito.forEach((c) => {
-                    const producto = results.find((p) => p.id===c.id)            
-                    
-                    for(const p in producto.productos){
-                        if(producto.productos[p].talla === c.talla && producto.productos[p].color === c.color){
-                            producto.productos[p].stock+=c.cartCount
-                        }
-                    }        
-                })                         
-            })        
+        setTimeout(() => {      
             setTotalCartCount(0)
             setCarrito([]) 
             setLoadBol(false)    
@@ -137,7 +106,7 @@ export const CartProvider = ({children}) => {
     }
 
     return(
-        <CartContext.Provider value={{totalCartCount:totalCartCount,carrito:carrito, getItems, addItem, removeItem, clear,setNumberOfItem, loadBol:loadBol,setLoadBol}}>            
+        <CartContext.Provider value={{totalCartCount:totalCartCount,carrito:carrito, addItem, removeItem, clear,setNumberOfItem, loadBol:loadBol,setLoadBol}}>            
             {children}
         </CartContext.Provider>
     )

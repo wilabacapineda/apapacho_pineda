@@ -20,16 +20,16 @@ const Cart = () => {
         const resultado = cartC.carrito.map((c) => (
             <div key={'product_'+c.id+'_'+c.color+'_'+c.talla} id={'product_'+c.id} className='productCart'>
                 <div className='productCartImg'>
-                    <Link to={'/tienda/item/'+c.id} key={'itemLinkImg'+c.id}><img src={require('./'+c.pictureUrl)} alt={c.title} /></Link>                                
+                    <Link to={'/tienda/item/'+c.id} key={'itemLinkImg'+c.id}><img src={c.pictureUrl} alt={c.title} /></Link>                                
                 </div>
                 <div className='productCartInfo'>
                     <h2 className='productCartName'><Link to={'/tienda/item/'+c.id} key={'itemLinkTitle'+c.id}>{c.title} {c.talla}</Link></h2>  
-                    <div className='productCartDetail'>Talla: {c.talla} | Color: {c.color} | Stock: {c.stock}</div>  
+                    <div className='productCartDetail'>Talla: {c.talla} | Color: {c.color}</div>  
                     <div className='productCartDetailTitle'>
                         <div className='productCartDetailTValue'><span>Valor</span><span>${c.price.toLocaleString()}</span></div>
-                        <div className='productCartDetailTValue'><span>Cant.</span><span><input type="number" disabled={cartC.loadBol} set="1" min="1" max={parseInt(c.stock) + parseInt(c.cartCount)} value={c.cartCount} onChange={ (e) => { cartC.setNumberOfItem(c,e.target.value) } } /></span></div>
+                        <div className='productCartDetailTValue'><span>Cant.</span><span><input type="number" disabled={cartC.loadBol} set="1" min="1" value={c.cartCount} onChange={ (e) => { cartC.setNumberOfItem(c,e.target.value) } } /></span></div>
                         <div className='productCartDetailTValue'><span>TOTAL</span><span>${(c.cartCount * c.price).toLocaleString()}</span></div>                               
-                        <div className='productCartDetailTValue'><button className='removeItem' onClick={ () => {cartC.removeItem(c.id, c.talla, c.color)}}><img src={trash_icon} alt='trash icon' /></button></div>                                 
+                        <div className='productCartDetailTValue'><button className='removeItem' onClick={ () => {cartC.removeItem(c)}}><img src={trash_icon} alt='trash icon' /></button></div>                                 
                     </div>                            
                 </div>                       
             </div>

@@ -4,6 +4,8 @@ import ItemCount from './../ItemCount/ItemCount'
 import {Link} from 'react-router-dom'
 import loading from './Loading_icon.gif'
 import './styles.css'
+import {db} from './../../utils/firebase'
+import {collection, getDocs} from 'firebase/firestore'
 
 const ItemDetail = ({item}) => {
     const cartC = useContext(CartContext)
@@ -11,9 +13,55 @@ const ItemDetail = ({item}) => {
     const [stock, setStock] = useState()
     const [tallaSelected, setTallaSelected] = useState("")
     const [colorSelected, setColorSelected] = useState("")
+    const [optionColor, setOptionColor] = useState("")
+    const [optionTalla, setOptionTalla] = useState("")
     const [botonDisabled,setBotonDisabled] = useState(true)
     const [precio, setPrecio] = useState(0)
     const [endCart, setEndCart] = useState(false)
+
+    useEffect(() => {
+        if(Object.keys(item).length!==0){
+            const q = collection(db,'items',item.id,'productos')             
+            getDocs(q).then( resp => {  
+                let color = []
+                let talla = []
+                resp.docs.map( p => {
+                    if (p.data().stock>0) {
+                        if(color.length===0){
+                            color.push(p.data().color)
+                        } else {
+                            let entro_c=0
+                            for (const c of color){
+                                if(c===p.data().color){
+                                    entro_c=1
+                                }
+                            }
+                            if(entro_c===0){
+                                color.push(p.data().color)
+                            }
+                        }  
+                
+                        if(talla.length===0){
+                            talla.push(p.data().talla)
+                        } else {
+                            let entro_t=0
+                            for (const c of talla){
+                                if(c===p.data().talla){
+                                    entro_t=1
+                                }
+                            }
+                            if(entro_t===0){
+                                talla.push(p.data().talla)
+                            }
+                        }  
+                    }
+                })                
+                setOptionColor(color.map((c) => (<option key={c} value={c}>{c}</option>)))
+                setOptionTalla(talla.map((c) => (<option key={c} value={c}>{c}</option>)))    
+            })
+        }        
+        return(() => {})
+    },[item])
 
     const addCart = (itemCount) => {
         setCartCount(itemCount)
@@ -50,56 +98,16 @@ const ItemDetail = ({item}) => {
         return resultado
     }
 
-    const load_prod = () => {
-
-        let color = []
-        let talla = []
-        for(let p in item){
-            for(const j in item[p].productos){
-                if (item[p].productos[j].stock>0) {
-                    if(color.length===0){
-                        color.push(item[p].productos[j].color)
-                    } else {
-                        let entro_c=0
-                        for (const c of color){
-                            if(c===item[p].productos[j].color){
-                                entro_c=1
-                            }
-                        }
-                        if(entro_c===0){
-                            color.push(item[p].productos[j].color)
-                        }
-                    }  
-            
-                    if(talla.length===0){
-                        talla.push(item[p].productos[j].talla)
-                    } else {
-                        let entro_t=0
-                        for (const c of talla){
-                            if(c===item[p].productos[j].talla){
-                                entro_t=1
-                            }
-                        }
-                        if(entro_t===0){
-                            talla.push(item[p].productos[j].talla)
-                        }
-                    }  
-                }                
-            } 
-        }              
-        
-        const optionColor = color.map((c) => (<option key={c} value={c}>{c}</option>))
-        const optionTalla = talla.map((c) => (<option key={c} value={c}>{c}</option>))
-        
+    const load_prod = () => {       
         return (            
-            <div className="producto" id={item[0].id}>
-                <h1>{item[0].title}</h1>
+            <div className="producto" id={item.id}>
+                <h1>{item.title}</h1>
                 <div className='productoItem'>
                     <div className='productoImage'>
-                        <img src={require('./'+item[0].pictureUrl)} alt={item[0].title} />
+                        <img src={item.pictureUrl} alt={item.title} />
                     </div>                            
                     <div className='productoInfo'>
-                        <div className="productoInfoDesc">{item[0].description}</div>
+                        <div className="productoInfoDesc">{item.description}</div>
                         <div className='productoInfoColor'>
                             <span>Color:</span>
                             <select key={'selectColor'} onChange={ (e) => setColorSelected(e.target.value) } defaultValue={colorSelected} name="color" id="color">
@@ -130,19 +138,22 @@ const ItemDetail = ({item}) => {
     
     useEffect( () => {            
         if(tallaSelected!=="" && colorSelected !==""){
-            for(let p in item){
-                for(const j in item[p].productos){
-                    if(item[p].productos[j].color === colorSelected && item[p].productos[j].talla === tallaSelected ) {
-                        setStock(item[p].productos[j].stock) 
-                        setPrecio(item[p].productos[j].price)
-                        if(item[p].productos[j].stock>1){
-                            setBotonDisabled(false)
-                        } else {
-                            setBotonDisabled(true)
-                        }                       
-                    }                    
-                } 
-            }  
+            if(Object.keys(item).length!==0){
+                const q = collection(db,'items',item.id,'productos')             
+                getDocs(q).then( resp => {                      
+                    resp.docs.map( p => {                        
+                        if(p.data().color === colorSelected && p.data().talla === tallaSelected ) {
+                            setStock(p.data().stock) 
+                            setPrecio(p.data().price)
+                            if(p.data().stock>1){
+                                setBotonDisabled(false)
+                            } else {
+                                setBotonDisabled(true)
+                            }     
+                        }
+                    })                                   
+                })
+            }        
         }  
         return () => {}
     },[tallaSelected,colorSelected])

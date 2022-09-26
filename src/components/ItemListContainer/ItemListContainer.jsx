@@ -1,52 +1,48 @@
 import ItemList from './../ItemList/ItemList'
-import {useState, useEffect,useContext} from 'react'
-import { CartContext } from './../../context/CartContext'
+import {useState, useEffect} from 'react'
 import { useParams } from "react-router-dom"
 import './styles.css'
+import {db} from './../../utils/firebase'
+import {collection, getDocs,query,where} from 'firebase/firestore'
 
 const ItemListContainer = () => {  
   const[items, setItems] = useState([])
-  const {id} = useParams()
-  const cartC = useContext(CartContext)
+  const {id} = useParams() 
 
   useEffect(() => {
-    setItems([])
-    const getItems = cartC.getItems()
-    getItems.then((result) => {
-      const rangoPrecios = (idx) => {
-        let min = 0
-        let max = 0    
-        let stock = 0
-        const rg = result.find( (p) => p.id === idx)
-        for(let i in rg.productos){
-          if((rg.productos[i].price>min && min===0) || (min!==0 && rg.productos[i].price<min)){
-            min = rg.productos[i].price
-          }
-          if(rg.productos[i].price>max){
-            max = rg.productos[i].price
-          }   
-          stock = stock + rg.productos[i].stock
-        }
-        return [min,max,stock]
-      }
-
-      const itemsByX = result.filter( (p) => {        
-        if(id===undefined){ 
-          const [min, max, stock] = rangoPrecios(p.id)         
-          p.price = min+' - '+max
-          p.stock = stock
-          return p          
-        } else if(p.categoria===id){            
-          const [min, max, stock] = rangoPrecios(p.id)
-          p.price = min+' - '+max
-          p.stock = stock
-          return p
-        } else {
-          return null
-        }
-      })
-      setItems(itemsByX) 
-    })
+    setItems([])   
+    
+    const getItems = async () => {
+      //creamos referencia
+      if(id===undefined) {
+        const q = collection(db,"items")
+        const response = await getDocs(q)            
+        const productos = response.docs.map(doc => {              
+            const newCat = {
+                ... doc.data(),
+                id: doc.id,
+            }
+            return newCat
+        })  
+        return productos
+      } else {
+        const q = query(collection(db,"items"),where("categoria","==",id))
+        const response = await getDocs(q)            
+        const productos = response.docs.map(doc => {              
+            const newCat = {
+                ... doc.data(),
+                id: doc.id,
+            }
+            return newCat
+        })  
+        return productos
+      }              
+                           
+    }
+    getItems().then((result) => {      
+      setItems(result) 
+    })   
+    
     return () => {}
   }, [id])
 
