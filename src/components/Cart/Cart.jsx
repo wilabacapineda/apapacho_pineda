@@ -30,7 +30,7 @@ const Cart = () => {
             dateUpdate: date.toLocaleDateString(),
             total: cartC.carrito.reduce((acc,c) => acc + (c.cartCount * c.price),0)
         } 
-        console.oog(order)
+        console.log(order)
         const orderDoc = doc(db,'orders',cartC.idOrder)
         updateDoc(orderDoc, order)
         MySwal.fire({
@@ -63,7 +63,7 @@ const Cart = () => {
             dateCreate: date.toLocaleDateString(),
             total: cartC.carrito.reduce((acc,c) => acc + (c.cartCount * c.price),0)
         }     
-        console.oog(order) 
+        console.log(order) 
         const ordersCollection = collection(db,'orders')
         addDoc(ordersCollection, order).then( response => {                        
             cartC.setIdOrder(response.id)       
