@@ -9,6 +9,8 @@ export const CartProvider = ({children}) => {
     const [totalCartCount, setTotalCartCount]= useState(0)
     const [carrito, setCarrito]= useState([])        
     const [loadBol, setLoadBol]= useState(true)     
+    const [idOrder, setIdOrder] = useState("")
+    const [userInfo, setUserInfo]=useState("")
 
     const addItem = (item,quantity,tallaSelected,colorSelected) => {
         setTotalCartCount(parseInt(totalCartCount)+parseInt(quantity))    
@@ -66,7 +68,6 @@ export const CartProvider = ({children}) => {
                         item.cartCount = parseInt(value)
                         setTotalCartCount(totalCartCount+dif)
                         setCarrito(carrito)       
-                        console.log(carrito)                  
                     }
                 }
             })
@@ -104,7 +105,7 @@ export const CartProvider = ({children}) => {
     }
 
     return(
-        <CartContext.Provider value={{totalCartCount:totalCartCount,carrito:carrito, addItem, removeItem, clear,setNumberOfItem, loadBol:loadBol,setLoadBol,isInCart}}>            
+        <CartContext.Provider value={{totalCartCount:totalCartCount,carrito:carrito, addItem, removeItem, clear,setNumberOfItem, loadBol:loadBol,setLoadBol,isInCart,idOrder:idOrder,setIdOrder,userInfo:userInfo,setUserInfo}}>            
             {children}
         </CartContext.Provider>
     )

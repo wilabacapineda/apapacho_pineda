@@ -13,8 +13,15 @@
 
 .carrito .carritoPage .carritoRight {
     text-align: left;
+} .carrito .carritoPage .carritoRight h2 {
+    margin-bottom: 0;
+} .carrito .carritoPage .carritoRight .totalCarrito {
+    margin: 0;
+} .carrito .carritoPage .carritoRight .cantProd {
+    font-size: 1rem;
 } .carrito .carritoPage .carritoRight .vaciarCarrito button {
     cursor: pointer;
+    padding: 0.5rem 1rem;
 } 
 
 .carrito .carritoPage .carritoLeft .productCart{
@@ -57,3 +64,25 @@
     width: 1rem;
     cursor: pointer;
 } 
+
+.orderInfo {
+    padding: 1rem 0;
+} .orderInfo h4 {
+    padding: 0;
+    margin: 0;
+}.orderInfo .orderForm {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+} .orderInfo .orderForm div {
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+}
+
+.endCart {
+    margin-bottom: 0;
+    color: red;
+}
