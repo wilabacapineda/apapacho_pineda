@@ -8,10 +8,12 @@ import { CartContext } from './../../context/CartContext'
 import './styles.css'
 
 const CartWidget = () => {  
-  const {totalCartCount} = useContext(CartContext)
+  const {totalCartCount,idToken} = useContext(CartContext)
   return (        
-      <div className="cartWidget">  
-          <img className="cartIcon" id="usuario" src={UserIcon} alt="Icono de Usuario"/>
+      <div className="cartWidget">
+          <Link to='/users/login'  >
+            <img className="cartIcon" id={ localStorage.getItem('user') ? "imagenUsuario" : "usuario" } src={ localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).photoURL : UserIcon } alt="Icono de Usuario"/>
+          </Link>          
           {totalCartCount > 0 && (
             <Link to='/cart' className='cartWidget'>
               <img className="cartIcon" src={CartIcon} alt="Icono de Carro" />

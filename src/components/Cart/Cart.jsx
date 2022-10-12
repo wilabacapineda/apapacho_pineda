@@ -17,22 +17,35 @@ const Cart = () => {
     const MySwal = withReactContent(Swal)
     const navigate = useNavigate();
     
-    const sendOrder = (e) => {   
-        cartC.setUserInfo(e)
-        cartC.idOrder ? updateOrder (e) : createOrder (e)        
+    const sendOrder = (e) => {
+        if(e.email === e.repeatEmail){
+            cartC.setUserInfo(e)
+            localStorage.setItem('userInfo',JSON.stringify(e))
+            cartC.idOrder ? updateOrder (e) : createOrder (e)        
+            return true
+        } else {
+            MySwal.fire({
+                icon: 'error',
+                title: 'Emails no coinciden',
+                cancelButtonText: 'Regresar',
+            })
+            return false
+        }        
     }
 
     const updateOrder = (e) => {
         let date = new Date();
+        const uid = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).uid : ""
         const order = {
             buyer: e,
+            id:uid,
             items: cartC.carrito,
             dateUpdate: date.toLocaleDateString(),
             total: cartC.carrito.reduce((acc,c) => acc + (c.cartCount * c.price),0)
         } 
-        console.log(order)
         const orderDoc = doc(db,'orders',cartC.idOrder)
         updateDoc(orderDoc, order)
+        localStorage.setItem('idOrder',cartC.idOrder)
         MySwal.fire({
             icon: 'success',
             title: 'Su Orden ha sido actualizada correctamente!',
@@ -49,6 +62,7 @@ const Cart = () => {
                     text: 'Su orden ha sido finalizada',
                 }).then(navigate('/')) 
             } else {
+
                 navigate('/tienda')
             }
         })
@@ -56,17 +70,19 @@ const Cart = () => {
 
     const createOrder = (e) => {
         let date = new Date();
+        const uid = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).uid : ""
         const order = {
             buyer: e,
+            id:uid,
             items: cartC.carrito,
             date: date.toLocaleDateString(),
             dateCreate: date.toLocaleDateString(),
             total: cartC.carrito.reduce((acc,c) => acc + (c.cartCount * c.price),0)
         }     
-        console.log(order) 
         const ordersCollection = collection(db,'orders')
         addDoc(ordersCollection, order).then( response => {                        
-            cartC.setIdOrder(response.id)       
+            cartC.setIdOrder(response.id)     
+            localStorage.setItem('idOrder',response.id)  
             MySwal.fire({
                 icon: 'success',
                 title: 'Su Orden ha sido creada correctamente',
@@ -114,7 +130,16 @@ const Cart = () => {
                 })
             })
             
-        })         
+        }) 
+        let date = new Date();
+        const order = {
+            end: true,
+            dateEnd: date.toLocaleDateString()
+        } 
+        const orderDoc = doc(db,'orders',cartC.idOrder)
+        updateDoc(orderDoc, order)
+        localStorage.removeItem("idOrder")
+
         cartC.setLoadBol(false) 
         cartC.clear()
         cartC.setIdOrder("")                    
@@ -167,18 +192,26 @@ const Cart = () => {
                                     </div>
                                     <div className='orderInfo'>
                                         <form onSubmit={handleSubmit(sendOrder)} className="orderForm">
-                                            <h4>Información Comprador</h4>
+                                            <h4>Orden de Compra</h4>
+                                            <span className='idOrder'><span className="textColorNegrita">Estado:</span><span className="textColorRed">Compra No Finalizada</span></span>
+                                            { cartC.idOrder ? (<span className='idOrder'><span className="textColorNegrita">ID:</span>{cartC.idOrder}</span>) : "" }
+                                            <h5>Información Comprador</h5>
                                             <div>
                                                 <label>Nombre: </label>
-                                                <input type="text" defaultValue={ cartC.userInfo.name} placeholder="Nombre" {...register("name", {required: true, maxLength: 80})} />
+                                                <input type="text" defaultValue={cartC.userInfo && cartC.userInfo.name} placeholder="Nombre" {...register("name", {required: true, maxLength: 120})} />
+                                            </div>
+                                            <div>
+                                                <label>Apellido: </label>
+                                                <input type="text" defaultValue={cartC.userInfo && cartC.userInfo.lastname} placeholder="Apellido" {...register("lastname", {required: true, maxLength: 120})} />
                                             </div>
                                             <div>
                                                 <label>Telefono: </label>
-                                                <input type="tel" defaultValue={cartC.userInfo && cartC.userInfo.phone} placeholder="Telefono" {...register("phone", {required: true, maxLength: 12, pattern: /^(\+?56)?(\s?)(0?9)(\s?)[98765432]\d{7}$/i})} />
+                                                <input type="tel" defaultValue={cartC.userInfo && cartC.userInfo.phone} placeholder="+56987654321" {...register("phone", {required: true, maxLength: 12, pattern: /^(\+?56)?(\s?)(0?9)(\s?)[98765432]\d{7}$/i})} />
                                             </div>
                                             <div>
                                                 <label>Correo: </label>
                                                 <input type="email" defaultValue={cartC.userInfo && cartC.userInfo.email} placeholder="Email" {...register("email", {required: true, pattern: /^\S+@\S+$/i})} />
+                                                <input type="email" defaultValue={cartC.userInfo && cartC.userInfo.email} placeholder="Repetir Email" {...register("repeatEmail", {required: true, pattern: /^\S+@\S+$/i})} />
                                             </div>                                            
                                             <button className="botonLc" type="submit">{cartC.idOrder ? "Actualizar Orden" : "Crear Orden"}</button>
                                         </form>

@@ -1,16 +1,42 @@
 import React, { useState } from 'react'
 import {db} from './../../src/utils/firebase'
-import {collection, getDocs, query,where} from 'firebase/firestore'
+import {collection, getDocs, doc, getDoc, query,where} from 'firebase/firestore'
 
 export const CartContext = React.createContext()
 
-
 export const CartProvider = ({children}) => {
+    const [loadBol, setLoadBol]= useState(true)  
     const [totalCartCount, setTotalCartCount]= useState(0)
-    const [carrito, setCarrito]= useState([])        
-    const [loadBol, setLoadBol]= useState(true)     
-    const [idOrder, setIdOrder] = useState("")
-    const [userInfo, setUserInfo]=useState("")
+    const [carrito, setCarrito]= useState([])
+    const [idToken, setIdToken] = useState( localStorage.getItem('idToken') ? localStorage.getItem('idToken') : "")
+    const [userInfo, setUserInfo]=useState(localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : "")
+    const [idOrder, setIdOrder] = useState(localStorage.getItem('idOrder') ? () => {
+        const idOrderX = localStorage.getItem('idOrder')
+        const q = doc(db,"orders",idOrderX)    
+        let orderEnd = 0;        
+        getDoc(q).then(resp => {
+            if(resp.data().end!==true){                
+                let cartCountX = 0
+                resp.data().items.forEach( i => {
+                    cartCountX+=parseInt(i.cartCount)
+                })   
+                setUserInfo(resp.data().buyer)             
+                setTotalCartCount(cartCountX)
+                setCarrito(resp.data().items)                                        
+            } else {
+                orderEnd = 1
+            }            
+        })
+
+        if(orderEnd===0){
+            return idOrderX        
+        } else {
+            localStorage.removeItem("idOrder")
+            return ""            
+        }
+        
+    } :"")
+    
 
     const addItem = (item,quantity,tallaSelected,colorSelected) => {
         setTotalCartCount(parseInt(totalCartCount)+parseInt(quantity))    
@@ -105,7 +131,7 @@ export const CartProvider = ({children}) => {
     }
 
     return(
-        <CartContext.Provider value={{totalCartCount:totalCartCount,carrito:carrito, addItem, removeItem, clear,setNumberOfItem, loadBol:loadBol,setLoadBol,isInCart,idOrder:idOrder,setIdOrder,userInfo:userInfo,setUserInfo}}>            
+        <CartContext.Provider value={{totalCartCount:totalCartCount,carrito:carrito, addItem, removeItem, clear,setNumberOfItem, loadBol:loadBol,setLoadBol,isInCart,idOrder:idOrder,setIdOrder,userInfo:userInfo,setUserInfo, idToken:idToken, setIdToken}}>            
             {children}
         </CartContext.Provider>
     )

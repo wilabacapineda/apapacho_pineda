@@ -1,11 +1,12 @@
-import './App.css';
-import NavBar from './components/NavBar/NavBar';
-import ItemListContainer from './components/ItemListContainer/ItemListContainer';
-import Bienvenida from './components/Bienvenida/Bienvenida';
+import './App.css'
+import NavBar from './components/NavBar/NavBar'
+import ItemListContainer from './components/ItemListContainer/ItemListContainer'
+import Bienvenida from './components/Bienvenida/Bienvenida'
 import {BrowserRouter, Routes,Route} from 'react-router-dom'
-import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailContainer';
-import Cart from './components/Cart/Cart';
-import { CartProvider } from './context/CartContext';
+import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailContainer'
+import Cart from './components/Cart/Cart'
+import { CartProvider } from './context/CartContext'
+import Users from './components/Users/Users'
 
 function App() {
 
@@ -30,6 +31,9 @@ function App() {
               <Route path='/cart' element={<Cart/>} /> 
               <Route path='/tienda/categoria/:id' element={<ItemListContainer />} /> 
               <Route path='/tienda/item/:id' element={<ItemDetailContainer />} />                    
+              <Route path='/tienda/item/:id' element={<ItemDetailContainer />} />                    
+              <Route path='/users/' element={<Users />} />
+              <Route path='/users/:login' element={<Users />} /> 
             </Routes>
           </header>
         </div>

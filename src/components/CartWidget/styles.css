@@ -5,6 +5,9 @@
 } .cartIcon#usuario {
     width: 1rem;
     padding-right: 1rem;
+} .cartIcon#imagenUsuario {
+    width: 2rem;
+    border-radius: 50%;
 }
 
 .cartWidget {

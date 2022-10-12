@@ -1,0 +1,15 @@
+.userInfo{
+    color: black;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    padding: 2rem;
+} .userInfo img {
+    border-radius: 50%;
+} .userInfo span {
+    font-size: 1rem;
+} .userInfo h4 {
+    margin: 0rem;
+}
