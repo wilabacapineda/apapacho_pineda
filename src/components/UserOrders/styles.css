@@ -1,0 +1,28 @@
+.userOrders {
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+} .userOrders h4 {
+    margin-bottom: 0;
+} .userOrders .orders {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    background: #b7ddde;
+    border-radius: 10px;
+    padding: 1rem;
+    width: 100%;
+    justify-content: space-around;
+} .userOrders .orders .orderID {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+} .userOrders .orders .orderID .title {
+    font-size: 0.85rem;
+} .userOrders .orders .orderID .value {
+    font-size: 1rem;
+    font-weight: bold;
+}
