@@ -1,0 +1,59 @@
+.orden {
+    color: black;
+} .orden .ordenBuyer {
+    background-color: #b7ddde;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 1rem 2rem;      
+    justify-content: space-around;
+    margin: 1rem auto;    
+    border-radius: 10px;
+} .orden .ordenBuyer div {
+    display: flex;
+    flex-direction: column;
+} .orden .ordenBuyer div .title {
+    font-size: 0.85rem;
+    font-weight: bold;
+} .orden .ordenBuyer div .value {
+    font-size: 1rem;
+}
+
+.orden .orderItems {
+    padding-bottom: 2rem;
+}
+.orden .productCart{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0.5rem 0px;
+} .orden .productCartImg, .orden .productCartImg img {
+    max-width: 150px;
+} .orden .productCartInfo .productCartName {
+    margin: 0;
+    text-align: left;
+} .orden .productCartInfo .productCartDetail {
+    font-size: 1rem;
+    text-align: left;
+} .orden .productCartInfo .productCartDetailTitle {
+    display: flex;
+    flex-direction: row;
+    align-content: stretch;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 1rem;
+    font-size: 1rem;
+    text-align: left;
+} .orden .productCartInfo .productCartDetailTValue {        
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    align-content: center;    
+    font-size: 1rem;
+    text-align: left;
+} 

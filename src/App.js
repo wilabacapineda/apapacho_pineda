@@ -7,6 +7,7 @@ import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailCont
 import Cart from './components/Cart/Cart'
 import { CartProvider } from './context/CartContext'
 import Users from './components/Users/Users'
+import Order from './components/Order/Order'
 
 function App() {
 
@@ -33,7 +34,7 @@ function App() {
               <Route path='/tienda/item/:id' element={<ItemDetailContainer />} />                    
               <Route path='/tienda/item/:id' element={<ItemDetailContainer />} />                    
               <Route path='/users/' element={<Users />} />
-              <Route path='/users/:login' element={<Users />} /> 
+              <Route path='/order/:id' element={<Order />} /> 
             </Routes>
           </header>
         </div>
