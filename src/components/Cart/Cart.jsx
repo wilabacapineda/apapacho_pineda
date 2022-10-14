@@ -35,7 +35,7 @@ const Cart = () => {
 
     const updateOrder = (e) => {
         let date = new Date();
-        const uid = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).uid : ""
+        const uid = cartC.userBool ? JSON.parse(localStorage.getItem("user")).uid : ""
         const order = {
             buyer: e,
             id:uid,
@@ -70,7 +70,7 @@ const Cart = () => {
 
     const createOrder = (e) => {
         let date = new Date();
-        const uid = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).uid : ""
+        const uid = cartC.userBool ? JSON.parse(localStorage.getItem("user")).uid : ""
         const order = {
             buyer: e,
             id:uid,
@@ -154,7 +154,7 @@ const Cart = () => {
     },[])
 
     const loadForm = () => {
-        if(localStorage.getItem('idToken')){
+        if(cartC.userBool){
             return (
                 <form onSubmit={handleSubmit(sendOrder)} className="orderForm">
                     <h4>Orden de Compra</h4>
