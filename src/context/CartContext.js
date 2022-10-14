@@ -8,7 +8,7 @@ export const CartProvider = ({children}) => {
     const [loadBol, setLoadBol]= useState(true)  
     const [totalCartCount, setTotalCartCount]= useState(0)
     const [carrito, setCarrito]= useState([])
-    const [userBool, setUserBool] = useState(localStorage.getItem('idToken') ? true : false)
+    const [userBool, setUserBool] = useState(localStorage.getItem('user') ? true : false)
     const [userInfo, setUserInfo]=useState(localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : "")
     const [idOrder, setIdOrder] = useState(localStorage.getItem('idOrder') ? () => {
         const idOrderX = localStorage.getItem('idOrder')
