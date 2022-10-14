@@ -17,7 +17,7 @@ const ItemDetailContainer = () => {
             id: result.id
           }
           setItem(auxItem)
-        }
+        } 
       })
       
       return () => {}

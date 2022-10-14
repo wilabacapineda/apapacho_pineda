@@ -18,6 +18,7 @@ const ItemDetail = ({item}) => {
     const [botonDisabled,setBotonDisabled] = useState(true)
     const [precio, setPrecio] = useState(0)
     const [endCart, setEndCart] = useState(false)
+    const [loadItem, setLoadItem] = useState(false)
 
     useEffect(() => {
         if(Object.keys(item).length!==0){
@@ -101,42 +102,58 @@ const ItemDetail = ({item}) => {
         return resultado
     }
 
-    const load_prod = () => {       
-        return (            
-            <div className="producto" id={item.id}>
-                <h1>{item.title}</h1>
-                <div className='productoItem'>
-                    <div className='productoImage'>
-                        <img src={item.pictureUrl} alt={item.title} />
-                    </div>                            
-                    <div className='productoInfo'>
-                        <div className="productoInfoDesc">{item.description}</div>
-                        <div className='productoInfoColor'>
-                            <span>Color:</span>
-                            <select key={'selectColor'} onChange={ (e) => setColorSelected(e.target.value) } defaultValue={colorSelected} name="color" id="color">
-                                <option value="" disabled>Seleccione un Color</option>
-                                {optionColor}
-                            </select>
-                        </div>
-                        <div className='productoInfoTalla'>
-                            <span>Talla:</span>
-                            <select key={'selectTalla'} onChange={ (e) => setTallaSelected(e.target.value) } defaultValue={tallaSelected} name="talla" id="talla">
-                                <option value="" disabled>Seleccione un Talla</option>
-                                {optionTalla}
-                            </select>
-                        </div>
-                        <div className='productoInfoPrice'>
-                            {precio>0 && 'Precio: $'+precio.toLocaleString()}
-                        </div>                                             
-                        {stock>=0 && load_cart()}                        
-                    </div>                    
-                </div>                      
-            </div>            
-        )
+    const load_prod = () => {    
+        if(item.id)   {
+            return (            
+                <div className="producto" id={item.id}>
+                    <h1>{item.title}</h1>
+                    <div className='productoItem'>
+                        <div className='productoImage'>
+                            <img src={item.pictureUrl} alt={item.title} />
+                        </div>                            
+                        <div className='productoInfo'>
+                            <div className="productoInfoDesc">{item.description}</div>
+                            <div className='productoInfoColor'>
+                                <span>Color:</span>
+                                <select key={'selectColor'} onChange={ (e) => setColorSelected(e.target.value) } defaultValue={colorSelected} name="color" id="color">
+                                    <option value="" disabled>Seleccione un Color</option>
+                                    {optionColor}
+                                </select>
+                            </div>
+                            <div className='productoInfoTalla'>
+                                <span>Talla:</span>
+                                <select key={'selectTalla'} onChange={ (e) => setTallaSelected(e.target.value) } defaultValue={tallaSelected} name="talla" id="talla">
+                                    <option value="" disabled>Seleccione un Talla</option>
+                                    {optionTalla}
+                                </select>
+                            </div>
+                            <div className='productoInfoPrice'>
+                                {precio>0 && 'Precio: $'+precio.toLocaleString()}
+                            </div>                                             
+                            {stock>=0 && load_cart()}                        
+                        </div>                    
+                    </div>                      
+                </div>            
+            )
+        } else {
+            return (
+                <div className="producto">
+                    <h3>Producto NO existe</h3>
+                    <Link to={'/tienda'}><h4>Ir a la Tienda</h4></Link>                                                                
+                </div>                     
+            )
+        }
+        
     }
 
     const load_img = () => {
+        
+        setTimeout(() => {   
+            setLoadItem(true)    
+        }, 2000)
+
         return ( <div className="bodyLoading"><div className="loading"><img src={loading} alt="loading" /></div></div> )
+        
     }
     
     useEffect( () => {            
@@ -173,7 +190,7 @@ const ItemDetail = ({item}) => {
     
     return (
         <>            
-            { Object.keys(item).length===0 ? load_img() : load_prod() }
+            { loadItem ? load_prod() : load_img()}
         </>
     )    
 }

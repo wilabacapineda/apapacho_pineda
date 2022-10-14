@@ -8,7 +8,7 @@ import './styles.css'
 
 const Users = () => {
     const cartC = useContext(CartContext)
-    const [userBool, setUserBool] = useState(localStorage.getItem('idToken') ? 1 : 0)
+    //const [userBool, setUserBool] = useState(localStorage.getItem('idToken') ? 1 : 0)
     const navigate = useNavigate()
     const provider = new GoogleAuthProvider()    
     auth.languageCode = 'es'
@@ -32,10 +32,10 @@ const Users = () => {
     }, [])
     
     useEffect(() => {
-        if(userBool===0){
+        if(cartC.userBool===0){
             navigate('/users')
         }        
-    },[userBool, navigate])
+    },[cartC.userBool, navigate])
     
     
     const iniciarSesion = () => {                          
@@ -79,7 +79,7 @@ const Users = () => {
             // Sign-out successful.             
             localStorage.removeItem('idToken')                
             localStorage.removeItem('user')    
-            setUserBool(0)
+            cartC.setUserBool(false)
         })
         
     }
@@ -102,7 +102,7 @@ const Users = () => {
                 localStorage.setItem('userInfo',JSON.stringify(auxUI))
                 localStorage.setItem('idToken',credential.idToken)                
                 localStorage.setItem('user',JSON.stringify(result.user))                     
-                setUserBool(1)
+                cartC.setUserBool(true)
         }).catch((error) => {
                 // Handle Errors here.
                 const errorCode = error.code;

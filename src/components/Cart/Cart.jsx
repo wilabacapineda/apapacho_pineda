@@ -152,6 +152,69 @@ const Cart = () => {
         }, 2000)   
         return () => {}     
     },[])
+
+    const loadForm = () => {
+        if(localStorage.getItem('idToken')){
+            return (
+                <form onSubmit={handleSubmit(sendOrder)} className="orderForm">
+                    <h4>Orden de Compra</h4>
+                    <span className='idOrder'><span className="textColorNegrita">Estado:</span><span className="textColorRed">Compra No Finalizada</span></span>
+                    { cartC.idOrder ? (<span className='idOrder'><span className="textColorNegrita">ID:</span>{cartC.idOrder}</span>) : "" }
+                    <hr />
+                    <h5>Información Comprador</h5>
+                    <span className="greenSession">Sesión de compra iniciada</span>
+                    <div>                        
+                        <label>Nombre:</label>
+                        <span>{JSON.parse(localStorage.getItem('user')).displayName}</span>
+                        <input type="hidden" defaultValue={cartC.userInfo && cartC.userInfo.name} placeholder="Nombre" {...register("name", {required: true, maxLength: 120})} />
+                        <input type="hidden" defaultValue={cartC.userInfo && cartC.userInfo.lastname} placeholder="Apellido" {...register("lastname", {required: true, maxLength: 120})} />
+                    </div>                    
+                    <div>
+                        <label>Correo: </label>
+                        <span>{JSON.parse(localStorage.getItem('user')).email}</span>
+                        <input type="hidden" readOnly={true} defaultValue={cartC.userInfo && cartC.userInfo.email} placeholder="Email" {...register("email", {required: true, pattern: /^\S+@\S+$/i})} />
+                        <input type="hidden" readOnly={true} defaultValue={cartC.userInfo && cartC.userInfo.email} placeholder="Repetir Email" {...register("repeatEmail", {required: true, pattern: /^\S+@\S+$/i})} />
+                    </div>                                            
+                    <div>
+                        <label>Telefono: </label>
+                        <input type="tel" defaultValue={cartC.userInfo && cartC.userInfo.phone} placeholder="+56987654321" {...register("phone", {required: true, maxLength: 12, pattern: /^(\+?56)?(\s?)(0?9)(\s?)[98765432]\d{7}$/i})} />
+                    </div>
+                    
+                    <button className="botonLc" type="submit">{cartC.idOrder ? "Actualizar Orden" : "Crear Orden"}</button>
+                </form>
+            )
+        } else {
+            return (
+                <form onSubmit={handleSubmit(sendOrder)} className="orderForm">
+                    <h4>Orden de Compra</h4>
+                    <span className='idOrder'><span className="textColorNegrita">Estado:</span><span className="textColorRed">Compra No Finalizada</span></span>
+                    { cartC.idOrder ? (<span className='idOrder'><span className="textColorNegrita">ID:</span>{cartC.idOrder}</span>) : "" }
+                    <hr />
+                    <h5>Información Comprador</h5>
+                    <div>
+                        <label>Nombre: </label>
+                        <input type="text" defaultValue={cartC.userInfo && cartC.userInfo.name} placeholder="Nombre" {...register("name", {required: true, maxLength: 120})} />
+                    </div>
+                    <div>
+                        <label>Apellido: </label>
+                        <input type="text" defaultValue={cartC.userInfo && cartC.userInfo.lastname} placeholder="Apellido" {...register("lastname", {required: true, maxLength: 120})} />
+                    </div>
+                    <div>
+                        <label>Telefono: </label>
+                        <input type="tel" defaultValue={cartC.userInfo && cartC.userInfo.phone} placeholder="+56987654321" {...register("phone", {required: true, maxLength: 12, pattern: /^(\+?56)?(\s?)(0?9)(\s?)[98765432]\d{7}$/i})} />
+                    </div>
+                    <div>
+                        <label>Correo: </label>
+                        <input type="email" defaultValue={cartC.userInfo && cartC.userInfo.email} placeholder="Email" {...register("email", {required: true, pattern: /^\S+@\S+$/i})} />
+                        <input type="email" defaultValue={cartC.userInfo && cartC.userInfo.email} placeholder="Repetir Email" {...register("repeatEmail", {required: true, pattern: /^\S+@\S+$/i})} />
+                    </div>                                            
+                    <button className="botonLc" type="submit">{cartC.idOrder ? "Actualizar Orden" : "Crear Orden"}</button>
+                </form>
+            )   
+        }
+    }
+        
+
     
     const carro = () => {
         const resultado = cartC.carrito.map((c) => (
@@ -172,6 +235,8 @@ const Cart = () => {
             </div>
             )
         )  
+
+    
         return (
             <>
                 <div className='carrito'>
@@ -191,30 +256,7 @@ const Cart = () => {
                                         <button disabled={cartC.totalCartCount===0} className='botonLc' onClick={() => {cartC.clear()}}>Vaciar Carrito</button>
                                     </div>
                                     <div className='orderInfo'>
-                                        <form onSubmit={handleSubmit(sendOrder)} className="orderForm">
-                                            <h4>Orden de Compra</h4>
-                                            <span className='idOrder'><span className="textColorNegrita">Estado:</span><span className="textColorRed">Compra No Finalizada</span></span>
-                                            { cartC.idOrder ? (<span className='idOrder'><span className="textColorNegrita">ID:</span>{cartC.idOrder}</span>) : "" }
-                                            <h5>Información Comprador</h5>
-                                            <div>
-                                                <label>Nombre: </label>
-                                                <input type="text" defaultValue={cartC.userInfo && cartC.userInfo.name} placeholder="Nombre" {...register("name", {required: true, maxLength: 120})} />
-                                            </div>
-                                            <div>
-                                                <label>Apellido: </label>
-                                                <input type="text" defaultValue={cartC.userInfo && cartC.userInfo.lastname} placeholder="Apellido" {...register("lastname", {required: true, maxLength: 120})} />
-                                            </div>
-                                            <div>
-                                                <label>Telefono: </label>
-                                                <input type="tel" defaultValue={cartC.userInfo && cartC.userInfo.phone} placeholder="+56987654321" {...register("phone", {required: true, maxLength: 12, pattern: /^(\+?56)?(\s?)(0?9)(\s?)[98765432]\d{7}$/i})} />
-                                            </div>
-                                            <div>
-                                                <label>Correo: </label>
-                                                <input type="email" defaultValue={cartC.userInfo && cartC.userInfo.email} placeholder="Email" {...register("email", {required: true, pattern: /^\S+@\S+$/i})} />
-                                                <input type="email" defaultValue={cartC.userInfo && cartC.userInfo.email} placeholder="Repetir Email" {...register("repeatEmail", {required: true, pattern: /^\S+@\S+$/i})} />
-                                            </div>                                            
-                                            <button className="botonLc" type="submit">{cartC.idOrder ? "Actualizar Orden" : "Crear Orden"}</button>
-                                        </form>
+                                        {loadForm()}
                                     </div> 
                                 </div>
                                 
@@ -236,6 +278,8 @@ const Cart = () => {
     const load_img = () => {
         return ( <div className="bodyLoading"><div className="loading"><img src={loading} alt="loading" /></div></div> )
     }
+
+    
 
     return (
         <>            

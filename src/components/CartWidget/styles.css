@@ -1,14 +1,24 @@
+.cartUser {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    font-size: 1rem;
+    color: white;
+    text-decoration: none;
+    padding-right: 1rem;
+} .cartUser .cartUserImage {
+    width: 1rem;
+    fill: white !important;
+    color: white;
+    padding-right: 5px;
+}
+
 .cartIcon {
     width: 1.3rem;
     fill: white !important;
     color: white;
-} .cartIcon#usuario {
-    width: 1rem;
-    padding-right: 1rem;
-} .cartIcon#imagenUsuario {
-    width: 2rem;
-    border-radius: 50%;
-}
+} 
 
 .cartWidget {
     display: flex;
@@ -19,6 +29,10 @@
     justify-content: flex-start;
     gap: 5px;  
     color: white;
+    text-decoration: none;
+}
+
+.cartWidget a {
     text-decoration: none;
 }
 

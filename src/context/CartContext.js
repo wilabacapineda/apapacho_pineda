@@ -8,6 +8,7 @@ export const CartProvider = ({children}) => {
     const [loadBol, setLoadBol]= useState(true)  
     const [totalCartCount, setTotalCartCount]= useState(0)
     const [carrito, setCarrito]= useState([])
+    const [userBool, setUserBool] = useState(localStorage.getItem('idToken') ? true : false)
     const [userInfo, setUserInfo]=useState(localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : "")
     const [idOrder, setIdOrder] = useState(localStorage.getItem('idOrder') ? () => {
         const idOrderX = localStorage.getItem('idOrder')
@@ -130,7 +131,7 @@ export const CartProvider = ({children}) => {
     }
 
     return(
-        <CartContext.Provider value={{totalCartCount:totalCartCount,carrito:carrito, addItem, removeItem, clear,setNumberOfItem, loadBol:loadBol,setLoadBol,isInCart,idOrder:idOrder,setIdOrder,userInfo:userInfo,setUserInfo}}>            
+        <CartContext.Provider value={{totalCartCount:totalCartCount,carrito:carrito, addItem, removeItem, clear,setNumberOfItem, loadBol:loadBol,setLoadBol,isInCart,idOrder:idOrder,setIdOrder,userInfo:userInfo,setUserInfo, userBool:userBool ,setUserBool}}>            
             {children}
         </CartContext.Provider>
     )

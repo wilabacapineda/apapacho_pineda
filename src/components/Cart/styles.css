@@ -1,3 +1,7 @@
+hr {
+    width: 100%;
+    margin: 1px;
+}
 .carrito {
     color:black;
     width: 100%;
@@ -109,4 +113,10 @@
 .endCart {
     margin-bottom: 0;
     color: red;
+}
+
+.greenSession {
+    background: green;
+    padding: 0 0.5rem;
+    font-size: 0.84rem;
 }
