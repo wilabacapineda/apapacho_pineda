@@ -1,6 +1,8 @@
 # **PROYECTO FINAL - REACT JS, Comisión 39045**
 Autor: Walter Pineda Ilabaca
 
+[Video - Recorrido Compra completo](https://www.youtube.com/watch?v=nb62lKWy3uY)
+
 ## **1. Librerias**
 El presente proyecto está realizado en React Js, utilizando las librerias externas Google Firebase, react-hook-form, react-router-dom y sweetalert2.
 
