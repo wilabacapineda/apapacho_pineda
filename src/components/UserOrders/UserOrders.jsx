@@ -1,5 +1,5 @@
 import {db} from './../../utils/firebase'
-import {doc,addDoc,updateDoc,collection,getDocs,getDoc,query,where} from 'firebase/firestore'
+import {collection,getDocs,query,where} from 'firebase/firestore'
 import { useEffect, useState, useContext} from 'react'
 import { CartContext } from '../../context/CartContext'
 import {NavLink} from 'react-router-dom'

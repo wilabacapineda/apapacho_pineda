@@ -126,6 +126,7 @@ export const CartProvider = ({children}) => {
         setTimeout(() => {      
             setTotalCartCount(0)
             setCarrito([]) 
+            localStorage.removeItem("idOrder")
             setLoadBol(false)    
         }, 1000)                                 
     }
