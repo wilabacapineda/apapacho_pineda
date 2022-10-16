@@ -1,5 +1,6 @@
 .orden {
     color: black;
+    padding: 0 1rem;
 } .orden .ordenBuyer {
     background-color: #b7ddde;
     display: flex;

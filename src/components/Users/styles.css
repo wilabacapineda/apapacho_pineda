@@ -21,3 +21,22 @@
 } .userProfile .userInfo h4 {
     margin: 0rem;
 }
+
+@media screen and (max-width:768px) {
+    .userProfile {
+        align-content: center;
+        justify-content: center
+    }
+
+    .userOrders {
+        padding: 0 1rem;
+        width: 100%;
+        align-items: center;
+        align-content: center;
+        flex-direction: column;
+    }
+
+    .userOrders .orders {
+        flex-direction: column;
+    }
+}
